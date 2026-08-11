@@ -221,3 +221,4 @@ impl FundingEscrowContract {
 }
 
 #[cfg(test)]
+mod test;
