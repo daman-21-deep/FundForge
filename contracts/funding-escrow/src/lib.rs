@@ -61,6 +61,13 @@ impl FundingEscrowContract {
     }
 
     /// Upgrades the smart contract bytecode. Only the Campaign Creator is authorized to execute this.
+    pub fn upgrade(env: Env, new_wasm_hash: BytesN<32>) {
+        let creator: Address = env.storage().instance().get(&DataKey::Creator).expect("Creator not configured");
+        creator.require_auth();
+        env.deployer().update_current_contract_wasm(new_wasm_hash);
+    }
+
+    /// Contributes XLM/Token to the campaign.
     pub fn fund(env: Env, contributor: Address, amount: i128) {
         contributor.require_auth();
 
