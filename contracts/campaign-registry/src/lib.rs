@@ -138,3 +138,4 @@ impl CampaignRegistryContract {
 }
 
 #[cfg(test)]
+mod test;
