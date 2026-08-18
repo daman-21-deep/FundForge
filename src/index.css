@@ -1,0 +1,344 @@
+@import "tailwindcss";
+
+/* Class-based Dark Mode configuration for Tailwind CSS v4 */
+@variant dark (&:where(.dark, .dark *));
+
+:root {
+  --background: #f7f8f9;
+  --on-background: #1a1c1d;
+  --primary: #121415;
+  --on-primary: #ffffff;
+  --surface: #ffffff;
+  --on-surface: #1a1c1d;
+  --surface-container-lowest: #ffffff;
+  --surface-container-low: #f0f1f2;
+  --surface-container: #e8e9eb;
+  --surface-container-high: #dedfe2;
+  --surface-container-highest: #d2d4d8;
+  --on-surface-variant: #5c5e62;
+  --outline: #72757a;
+  --outline-variant: #d2d4d8;
+  --surface-variant: #e8e9eb;
+  --surface-bright: #ffffff;
+  --surface-dim: #e8e9eb;
+}
+
+.dark {
+  --background: #131313;
+  --on-background: #e4e2e1;
+  --primary: #ffffff;
+  --on-primary: #2f3131;
+  --surface: #131313;
+  --on-surface: #e4e2e1;
+  --surface-container-lowest: #0e0e0e;
+  --surface-container-low: #1b1c1c;
+  --surface-container: #1f2020;
+  --surface-container-high: #2a2a2a;
+  --surface-container-highest: #353535;
+  --on-surface-variant: #c4c7c8;
+  --outline: #8e9192;
+  --outline-variant: #444748;
+  --surface-variant: #353535;
+  --surface-bright: #393939;
+  --surface-dim: #131313;
+}
+
+@theme {
+  /* Colors mapping to CSS variables */
+  --color-background: var(--background);
+  --color-on-background: var(--on-background);
+  --color-primary: var(--primary);
+  --color-on-primary: var(--on-primary);
+  --color-surface: var(--surface);
+  --color-on-surface: var(--on-surface);
+  --color-surface-container-lowest: var(--surface-container-lowest);
+  --color-surface-container-low: var(--surface-container-low);
+  --color-surface-container: var(--surface-container);
+  --color-surface-container-high: var(--surface-container-high);
+  --color-surface-container-highest: var(--surface-container-highest);
+  --color-on-surface-variant: var(--on-surface-variant);
+  --color-outline: var(--outline);
+  --color-outline-variant: var(--outline-variant);
+  --color-surface-variant: var(--surface-variant);
+  --color-surface-bright: var(--surface-bright);
+  --color-surface-dim: var(--surface-dim);
+
+  /* Hardcoded utility colors */
+  --color-on-primary-fixed: #1a1c1c;
+  --color-tertiary-container: #e2e2e2;
+  --color-secondary: #c7c6c6;
+  --color-on-secondary-container: #b8b8b8;
+  --color-inverse-primary: #5d5f5f;
+  --color-on-secondary-fixed: #1a1c1c;
+  --color-surface-tint: #c6c6c7;
+  --color-on-tertiary: #2f3131;
+  --color-primary-container: #e2e2e2;
+  --color-on-tertiary-container: #636565;
+  --color-primary-fixed: #e2e2e2;
+  --color-tertiary-fixed-dim: #c6c6c7;
+  --color-on-tertiary-fixed: #1a1c1c;
+  --color-on-secondary: #2f3131;
+  --color-inverse-on-surface: #303030;
+  --color-on-primary-container: #636565;
+  --color-on-secondary-fixed-variant: #464747;
+  --color-tertiary: #ffffff;
+  --color-on-primary-fixed-variant: #454747;
+  --color-on-tertiary-fixed-variant: #454747;
+  --color-error: #ffb4ab;
+  --color-on-error-container: #ffdad6;
+  --color-secondary-fixed: #e3e2e2;
+  --color-tertiary-fixed: #e2e2e2;
+  --color-secondary-fixed-dim: #c7c6c6;
+  --color-secondary-container: #484949;
+  --color-error-container: #93000a;
+  --color-on-error: #690005;
+  --color-primary-fixed-dim: #c6c6c7;
+
+  /* Spacing */
+  --spacing-stack-sm: 8px;
+  --spacing-stack-md: 16px;
+  --spacing-gutter: 24px;
+  --spacing-container-max: 1280px;
+  --spacing-stack-xs: 4px;
+  --spacing-stack-lg: 32px;
+  --spacing-margin-mobile: 16px;
+  --spacing-stack-xl: 64px;
+
+  /* Border Radius */
+  --radius-DEFAULT: 0.125rem;
+  --radius-lg: 0.25rem;
+  --radius-xl: 0.5rem;
+  --radius-full: 0.75rem;
+
+  /* Font Families */
+  --font-body-base: "Inter", sans-serif;
+  --font-label-mono: "Geist", monospace;
+  --font-display-lg-mobile: "Inter", sans-serif;
+  --font-headline-md: "Inter", sans-serif;
+  --font-body-sm: "Inter", sans-serif;
+  --font-table-data: "Geist", monospace;
+  --font-display-lg: "Inter", sans-serif;
+
+  /* Font Sizes */
+  --font-size-body-base: 16px;
+  --font-size-body-base--line-height: 24px;
+  --font-size-body-base--letter-spacing: 0em;
+  --font-size-body-base--font-weight: 400;
+
+  --font-size-label-mono: 12px;
+  --font-size-label-mono--line-height: 16px;
+  --font-size-label-mono--letter-spacing: 0.05em;
+  --font-size-label-mono--font-weight: 500;
+
+  --font-size-display-lg-mobile: 32px;
+  --font-size-display-lg-mobile--line-height: 40px;
+  --font-size-display-lg-mobile--letter-spacing: -0.02em;
+  --font-size-display-lg-mobile--font-weight: 700;
+
+  --font-size-headline-md: 24px;
+  --font-size-headline-md--line-height: 32px;
+  --font-size-headline-md--letter-spacing: -0.02em;
+  --font-size-headline-md--font-weight: 600;
+
+  --font-size-body-sm: 14px;
+  --font-size-body-sm--line-height: 20px;
+  --font-size-body-sm--letter-spacing: 0em;
+  --font-size-body-sm--font-weight: 400;
+
+  --font-size-table-data: 13px;
+  --font-size-table-data--line-height: 18px;
+  --font-size-table-data--letter-spacing: -0.01em;
+  --font-size-table-data--font-weight: 400;
+
+  --font-size-display-lg: 48px;
+  --font-size-display-lg--line-height: 56px;
+  --font-size-display-lg--letter-spacing: -0.04em;
+  --font-size-display-lg--font-weight: 700;
+}
+
+/* Base style resets */
+html, body {
+  background-color: var(--color-background);
+  color: var(--color-on-background);
+  font-family: var(--font-body-base);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-background);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-surface-container-highest);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-outline);
+}
+
+/* Custom global styling classes from Stitch */
+
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.grid-pattern {
+  background-size: 40px 40px;
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
+                    linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
+}
+.dark .grid-pattern {
+  background-image: linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+}
+
+.glass-card {
+  backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.glass-panel {
+  background: rgba(31, 32, 32, 0.4);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--color-outline-variant);
+}
+
+.glass-blur {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.mono-glow:hover {
+  border-color: rgba(255, 255, 255, 0.4);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+}
+
+.glow-border {
+  box-shadow: 0 0 0 1px rgba(68, 71, 72, 0.5);
+}
+.glow-border:hover {
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.2);
+}
+
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+}
+
+.hairline-border {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.card-hover {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.card-hover:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: scale(1.01);
+}
+
+.hero-gradient {
+  background: linear-gradient(180deg, rgba(19,19,19,0) 0%, rgba(19,19,19,0.9) 100%);
+}
+
+.step-transition {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.progress-ring-circle {
+  transition: stroke-dashoffset 0.5s ease-in-out;
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
+}
+
+.mask-fade {
+  mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+}
+
+/* Animations */
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-up {
+  animation: fade-in-up 0.6s ease-out forwards;
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+.animate-shimmer {
+  animation: shimmer 1.5s infinite;
+}
+
+/* Custom typography classes to bind layout rules from Stitch config */
+.font-body-base {
+  font-family: var(--font-body-base);
+  font-size: var(--font-size-body-base);
+  line-height: var(--font-size-body-base--line-height);
+  letter-spacing: var(--font-size-body-base--letter-spacing);
+  font-weight: var(--font-size-body-base--font-weight);
+}
+
+.font-label-mono {
+  font-family: var(--font-label-mono);
+  font-size: var(--font-size-label-mono);
+  line-height: var(--font-size-label-mono--line-height);
+  letter-spacing: var(--font-size-label-mono--letter-spacing);
+  font-weight: var(--font-size-label-mono--font-weight);
+}
+
+.font-display-lg-mobile {
+  font-family: var(--font-display-lg-mobile);
+  font-size: var(--font-size-display-lg-mobile);
+  line-height: var(--font-size-display-lg-mobile--line-height);
+  letter-spacing: var(--font-size-display-lg-mobile--letter-spacing);
+  font-weight: var(--font-size-display-lg-mobile--font-weight);
+}
+
+.font-headline-md {
+  font-family: var(--font-headline-md);
+  font-size: var(--font-size-headline-md);
+  line-height: var(--font-size-headline-md--line-height);
+  letter-spacing: var(--font-size-headline-md--letter-spacing);
+  font-weight: var(--font-size-headline-md--font-weight);
+}
+
+.font-body-sm {
+  font-family: var(--font-body-sm);
+  font-size: var(--font-size-body-sm);
+  line-height: var(--font-size-body-sm--line-height);
+  letter-spacing: var(--font-size-body-sm--letter-spacing);
+  font-weight: var(--font-size-body-sm--font-weight);
+}
+
+.font-table-data {
+  font-family: var(--font-table-data);
+  font-size: var(--font-size-table-data);
+  line-height: var(--font-size-table-data--line-height);
+  letter-spacing: var(--font-size-table-data--letter-spacing);
+  font-weight: var(--font-size-table-data--font-weight);
+}
+
+.font-display-lg {
+  font-family: var(--font-display-lg);
+  font-size: var(--font-size-display-lg);
+  line-height: var(--font-size-display-lg--line-height);
+  letter-spacing: var(--font-size-display-lg--letter-spacing);
+  font-weight: var(--font-size-display-lg--font-weight);
+}
