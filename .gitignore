@@ -34,3 +34,9 @@ target/
 
 # Soroban test snapshots
 test_snapshots/
+
+# Environment files
+.env
+.env.production
+.env.local
+!.env.example

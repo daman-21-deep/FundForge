@@ -8,7 +8,11 @@
     "build": "tsc -b && vite build",
     "lint": "oxlint",
     "test": "vitest run",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "contract:build": "cargo build --target wasm32-unknown-unknown --release",
+    "contract:test": "cargo test",
+    "contract:deploy": "bash scripts/deploy.sh",
+    "contract:init": "bash scripts/initialize.sh"
   },
   "dependencies": {
     "@albedo-link/intent": "^0.13.0",
