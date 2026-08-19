@@ -1,6 +1,7 @@
 #![no_std]
 use soroban_sdk::{
-    contract, contractimpl, contracttype, symbol_short, vec, Address, BytesN, Env, IntoVal, String, Val, Vec
+    contract, contractimpl, contracttype, symbol_short, vec, Address, BytesN, Env, IntoVal, String,
+    Val, Vec,
 };
 
 #[contracttype]
@@ -9,9 +10,11 @@ pub struct CampaignInfo {
     pub id: u32,
     pub creator: Address,
     pub title: String,
+    pub category: String,
     pub goal: i128,
     pub deadline: u64,
     pub escrow_address: Address,
+    pub created_at: u64,
 }
 
 #[contracttype]
@@ -36,13 +39,19 @@ impl CampaignRegistryContract {
         env.storage().instance().set(&DataKey::Initialized, &true);
         env.storage().instance().set(&DataKey::Admin, &admin);
         env.storage().instance().set(&DataKey::NextId, &1u32);
-        env.storage().instance().set(&DataKey::Campaigns, &Vec::<CampaignInfo>::new(&env));
+        env.storage()
+            .instance()
+            .set(&DataKey::Campaigns, &Vec::<CampaignInfo>::new(&env));
         env.storage().instance().extend_ttl(5000, 10000);
     }
 
     /// Upgrades the smart contract bytecode. Only the Admin is authorized to execute this.
     pub fn upgrade(env: Env, new_wasm_hash: BytesN<32>) {
-        let admin: Address = env.storage().instance().get(&DataKey::Admin).expect("Admin not configured");
+        let admin: Address = env
+            .storage()
+            .instance()
+            .get(&DataKey::Admin)
+            .expect("Admin not configured");
         admin.require_auth();
         env.deployer().update_current_contract_wasm(new_wasm_hash);
     }
@@ -53,19 +62,25 @@ impl CampaignRegistryContract {
         token: Address,
         creator: Address,
         title: String,
+        category: String,
         goal: i128,
         deadline: u64,
         escrow_wasm_hash: BytesN<32>,
     ) -> Address {
         creator.require_auth();
 
-        let initialized: bool = env.storage().instance().get(&DataKey::Initialized).unwrap_or(false);
+        let initialized: bool = env
+            .storage()
+            .instance()
+            .get(&DataKey::Initialized)
+            .unwrap_or(false);
         if !initialized {
             panic!("Registry not initialized");
         }
 
-        let mut next_id: u32 = env.storage().instance().get(&DataKey::NextId).unwrap_or(1);
-        let mut campaigns: Vec<CampaignInfo> = env.storage().instance().get(&DataKey::Campaigns).unwrap();
+        let next_id: u32 = env.storage().instance().get(&DataKey::NextId).unwrap_or(1);
+        let mut campaigns: Vec<CampaignInfo> =
+            env.storage().instance().get(&DataKey::Campaigns).unwrap();
 
         // Generate deployment salt using registry counter increment
         let mut salt_bytes = [0u8; 32];
@@ -94,20 +109,28 @@ impl CampaignRegistryContract {
             init_args,
         );
 
+        let created_at = env.ledger().timestamp();
+
         // Register campaign info
         let campaign_info = CampaignInfo {
             id: next_id,
             creator: creator.clone(),
             title: title.clone(),
+            category: category.clone(),
             goal,
             deadline,
             escrow_address: escrow_address.clone(),
+            created_at,
         };
         campaigns.push_back(campaign_info);
 
         // Update state
-        env.storage().instance().set(&DataKey::Campaigns, &campaigns);
-        env.storage().instance().set(&DataKey::NextId, &(next_id + 1));
+        env.storage()
+            .instance()
+            .set(&DataKey::Campaigns, &campaigns);
+        env.storage()
+            .instance()
+            .set(&DataKey::NextId, &(next_id + 1));
 
         // Emit registration event
         env.events().publish(
@@ -122,12 +145,35 @@ impl CampaignRegistryContract {
 
     /// Read all campaigns registered on-chain.
     pub fn get_campaigns(env: Env) -> Vec<CampaignInfo> {
-        env.storage().instance().get(&DataKey::Campaigns).unwrap_or(Vec::new(&env))
+        env.storage()
+            .instance()
+            .get(&DataKey::Campaigns)
+            .unwrap_or(Vec::new(&env))
+    }
+
+    /// Fetch campaigns matching a specific category.
+    pub fn get_campaigns_by_category(env: Env, category: String) -> Vec<CampaignInfo> {
+        let campaigns: Vec<CampaignInfo> = env
+            .storage()
+            .instance()
+            .get(&DataKey::Campaigns)
+            .unwrap_or(Vec::new(&env));
+        let mut filtered: Vec<CampaignInfo> = Vec::new(&env);
+        for camp in campaigns.iter() {
+            if camp.category == category {
+                filtered.push_back(camp);
+            }
+        }
+        filtered
     }
 
     /// Fetch a single campaign by ID.
     pub fn get_campaign_by_id(env: Env, id: u32) -> Option<CampaignInfo> {
-        let campaigns: Vec<CampaignInfo> = env.storage().instance().get(&DataKey::Campaigns).unwrap_or(Vec::new(&env));
+        let campaigns: Vec<CampaignInfo> = env
+            .storage()
+            .instance()
+            .get(&DataKey::Campaigns)
+            .unwrap_or(Vec::new(&env));
         for camp in campaigns.iter() {
             if camp.id == id {
                 return Some(camp);

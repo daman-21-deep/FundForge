@@ -1,8 +1,6 @@
 #[cfg(test)]
 use super::{CampaignRegistryContract, CampaignRegistryContractClient};
-use soroban_sdk::{
-    testutils::Address as _, Address, Env, BytesN, String
-};
+use soroban_sdk::{testutils::Address as _, Address, BytesN, Env, String};
 
 #[test]
 fn test_registry_initialization() {
@@ -53,7 +51,7 @@ fn test_unauthorized_upgrade() {
     registry_client.initialize(&admin);
 
     let dummy_hash = BytesN::from_array(&env, &[0u8; 32]);
-    
+
     // Call upgrade as a non-admin user
     env.as_contract(&registry_id, || {
         registry_client.upgrade(&dummy_hash);

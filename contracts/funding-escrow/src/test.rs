@@ -2,10 +2,13 @@
 use super::{FundingEscrowContract, FundingEscrowContractClient};
 use soroban_sdk::{
     testutils::{Address as _, Ledger},
-    token, Address, Env, BytesN
+    token, Address, BytesN, Env,
 };
 
-fn create_token_contract<'a>(env: &Env, admin: &Address) -> (token::Client<'a>, token::StellarAssetClient<'a>) {
+fn create_token_contract<'a>(
+    env: &Env,
+    admin: &Address,
+) -> (token::Client<'a>, token::StellarAssetClient<'a>) {
     let token_address = env.register_stellar_asset_contract(admin.clone());
     (
         token::Client::new(env, &token_address),
@@ -42,7 +45,7 @@ fn test_escrow_funding_success() {
 
     env.ledger().set_timestamp(deadline + 10);
     escrow_client.claim_funds();
-    
+
     assert_eq!(token_client.balance(&creator), 1000);
     assert_eq!(token_client.balance(&escrow_id), 0);
     assert!(escrow_client.get_metadata().withdrawn);
@@ -115,7 +118,8 @@ fn test_escrow_double_initialization() {
 
     let deadline = env.ledger().timestamp() + 1000;
     escrow_client.initialize(&token_client.address, &creator, &1000i128, &deadline);
-    escrow_client.initialize(&token_client.address, &creator, &1000i128, &deadline); // Must panic
+    escrow_client.initialize(&token_client.address, &creator, &1000i128, &deadline);
+    // Must panic
 }
 
 #[test]
@@ -135,7 +139,7 @@ fn test_unauthorized_escrow_upgrade() {
     escrow_client.initialize(&token_client.address, &creator, &1000i128, &deadline);
 
     let dummy_hash = BytesN::from_array(&env, &[1u8; 32]);
-    
+
     // Malicious user attempts upgrade
     let attacker = Address::generate(&env);
     env.as_contract(&escrow_id, || {

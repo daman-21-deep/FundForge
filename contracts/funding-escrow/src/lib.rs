@@ -1,5 +1,14 @@
 #![no_std]
-use soroban_sdk::{contract, contractimpl, contracttype, symbol_short, Address, Env, Symbol, token, BytesN};
+use soroban_sdk::{contract, contractimpl, contracttype, symbol_short, token, Address, BytesN, Env};
+
+#[contracttype]
+#[derive(Clone, Debug, Eq, PartialEq)]
+pub enum EscrowState {
+    Active,
+    Successful,
+    Failed,
+    Cancelled,
+}
 
 #[contracttype]
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -11,6 +20,7 @@ pub enum DataKey {
     Deadline,
     TotalRaised,
     Withdrawn,
+    State,
     Contributor(Address),
 }
 
@@ -23,6 +33,7 @@ pub struct EscrowMetadata {
     pub deadline: u64,
     pub total_raised: i128,
     pub withdrawn: bool,
+    pub state: EscrowState,
 }
 
 #[contract]
@@ -31,13 +42,7 @@ pub struct FundingEscrowContract;
 #[contractimpl]
 impl FundingEscrowContract {
     /// Initialize the escrow contract parameters. Can only be initialized once.
-    pub fn initialize(
-        env: Env,
-        token: Address,
-        creator: Address,
-        goal: i128,
-        deadline: u64,
-    ) {
+    pub fn initialize(env: Env, token: Address, creator: Address, goal: i128, deadline: u64) {
         if env.storage().instance().has(&DataKey::Initialized) {
             panic!("Contract already initialized");
         }
@@ -55,25 +60,98 @@ impl FundingEscrowContract {
         env.storage().instance().set(&DataKey::Deadline, &deadline);
         env.storage().instance().set(&DataKey::TotalRaised, &0i128);
         env.storage().instance().set(&DataKey::Withdrawn, &false);
-        
+        env.storage()
+            .instance()
+            .set(&DataKey::State, &EscrowState::Active);
+
         // Extend instance storage lease (Soroban TTL)
         env.storage().instance().extend_ttl(5000, 10000);
     }
 
     /// Upgrades the smart contract bytecode. Only the Campaign Creator is authorized to execute this.
     pub fn upgrade(env: Env, new_wasm_hash: BytesN<32>) {
-        let creator: Address = env.storage().instance().get(&DataKey::Creator).expect("Creator not configured");
+        let creator: Address = env
+            .storage()
+            .instance()
+            .get(&DataKey::Creator)
+            .expect("Creator not configured");
         creator.require_auth();
         env.deployer().update_current_contract_wasm(new_wasm_hash);
+    }
+
+    /// Returns the current state of the campaign escrow.
+    pub fn get_state(env: Env) -> EscrowState {
+        let state: Option<EscrowState> = env.storage().instance().get(&DataKey::State);
+        if let Some(EscrowState::Cancelled) = state {
+            return EscrowState::Cancelled;
+        }
+
+        let withdrawn: bool = env
+            .storage()
+            .instance()
+            .get(&DataKey::Withdrawn)
+            .unwrap_or(false);
+        if withdrawn {
+            return EscrowState::Successful;
+        }
+
+        let total_raised: i128 = env
+            .storage()
+            .instance()
+            .get(&DataKey::TotalRaised)
+            .unwrap_or(0);
+        let goal: i128 = env.storage().instance().get(&DataKey::Goal).unwrap_or(0);
+        let deadline: u64 = env
+            .storage()
+            .instance()
+            .get(&DataKey::Deadline)
+            .unwrap_or(0);
+
+        if total_raised >= goal {
+            EscrowState::Successful
+        } else if env.ledger().timestamp() >= deadline {
+            EscrowState::Failed
+        } else {
+            EscrowState::Active
+        }
+    }
+
+    /// Allows campaign creator to cancel an active campaign before funding goal or deadline is reached.
+    pub fn cancel_campaign(env: Env) {
+        let creator: Address = env.storage().instance().get(&DataKey::Creator).unwrap();
+        creator.require_auth();
+
+        let current_state = Self::get_state(env.clone());
+        if current_state != EscrowState::Active {
+            panic!("Only active campaigns can be cancelled");
+        }
+
+        env.storage()
+            .instance()
+            .set(&DataKey::State, &EscrowState::Cancelled);
+
+        env.events()
+            .publish((symbol_short!("cancel"), creator), env.ledger().timestamp());
+
+        env.storage().instance().extend_ttl(5000, 10000);
     }
 
     /// Contributes XLM/Token to the campaign.
     pub fn fund(env: Env, contributor: Address, amount: i128) {
         contributor.require_auth();
 
-        let initialized: bool = env.storage().instance().get(&DataKey::Initialized).unwrap_or(false);
+        let initialized: bool = env
+            .storage()
+            .instance()
+            .get(&DataKey::Initialized)
+            .unwrap_or(false);
         if !initialized {
             panic!("Contract not initialized");
+        }
+
+        let current_state = Self::get_state(env.clone());
+        if current_state != EscrowState::Active {
+            panic!("Campaign is not active for funding");
         }
 
         let deadline: u64 = env.storage().instance().get(&DataKey::Deadline).unwrap();
@@ -87,7 +165,11 @@ impl FundingEscrowContract {
         // Fetch current total raised & contributor previous contributions
         let mut total_raised: i128 = env.storage().instance().get(&DataKey::TotalRaised).unwrap();
         let contributor_key = DataKey::Contributor(contributor.clone());
-        let prev_contrib: i128 = env.storage().persistent().get(&contributor_key).unwrap_or(0);
+        let prev_contrib: i128 = env
+            .storage()
+            .persistent()
+            .get(&contributor_key)
+            .unwrap_or(0);
 
         // Perform token transfer to this contract address
         let token_addr: Address = env.storage().instance().get(&DataKey::Token).unwrap();
@@ -96,25 +178,33 @@ impl FundingEscrowContract {
 
         // Update state
         let new_contrib = prev_contrib + amount;
-        env.storage().persistent().set(&contributor_key, &new_contrib);
-        
+        env.storage()
+            .persistent()
+            .set(&contributor_key, &new_contrib);
+
         total_raised += amount;
-        env.storage().instance().set(&DataKey::TotalRaised, &total_raised);
+        env.storage()
+            .instance()
+            .set(&DataKey::TotalRaised, &total_raised);
 
         // Emit real-time event
-        env.events().publish(
-            (symbol_short!("fund"), contributor.clone()),
-            amount,
-        );
+        env.events()
+            .publish((symbol_short!("fund"), contributor.clone()), amount);
 
         // Extend storage TTLs
         env.storage().instance().extend_ttl(5000, 10000);
-        env.storage().persistent().extend_ttl(&contributor_key, 5000, 10000);
+        env.storage()
+            .persistent()
+            .extend_ttl(&contributor_key, 5000, 10000);
     }
 
     /// Creator claims the funds if campaign succeeded and deadline has passed.
     pub fn claim_funds(env: Env) {
-        let initialized: bool = env.storage().instance().get(&DataKey::Initialized).unwrap_or(false);
+        let initialized: bool = env
+            .storage()
+            .instance()
+            .get(&DataKey::Initialized)
+            .unwrap_or(false);
         if !initialized {
             panic!("Contract not initialized");
         }
@@ -125,6 +215,11 @@ impl FundingEscrowContract {
         let withdrawn: bool = env.storage().instance().get(&DataKey::Withdrawn).unwrap();
         if withdrawn {
             panic!("Funds already claimed");
+        }
+
+        let current_state = Self::get_state(env.clone());
+        if current_state == EscrowState::Cancelled {
+            panic!("Campaign was cancelled");
         }
 
         let deadline: u64 = env.storage().instance().get(&DataKey::Deadline).unwrap();
@@ -147,34 +242,47 @@ impl FundingEscrowContract {
         client.transfer(&env.current_contract_address(), &creator, &total_raised);
 
         // Emit real-time completion event
-        env.events().publish(
-            (symbol_short!("finish"), creator),
-            total_raised,
-        );
+        env.events()
+            .publish((symbol_short!("finish"), creator), total_raised);
     }
 
-    /// Contributor claims refund if campaign failed and deadline has passed.
+    /// Contributor claims refund if campaign failed or was cancelled.
     pub fn claim_refund(env: Env, contributor: Address) {
         contributor.require_auth();
 
-        let initialized: bool = env.storage().instance().get(&DataKey::Initialized).unwrap_or(false);
+        let initialized: bool = env
+            .storage()
+            .instance()
+            .get(&DataKey::Initialized)
+            .unwrap_or(false);
         if !initialized {
             panic!("Contract not initialized");
         }
 
-        let deadline: u64 = env.storage().instance().get(&DataKey::Deadline).unwrap();
-        if env.ledger().timestamp() < deadline {
-            panic!("Campaign is still active");
-        }
+        let current_state = Self::get_state(env.clone());
 
-        let total_raised: i128 = env.storage().instance().get(&DataKey::TotalRaised).unwrap();
-        let goal: i128 = env.storage().instance().get(&DataKey::Goal).unwrap();
-        if total_raised >= goal {
-            panic!("Campaign succeeded, refund not available");
+        // Refunds allowed if Cancelled OR if Active/Failed after deadline when goal is not met
+        if current_state == EscrowState::Cancelled {
+            // Cancelled campaigns allow immediate refund
+        } else {
+            let deadline: u64 = env.storage().instance().get(&DataKey::Deadline).unwrap();
+            if env.ledger().timestamp() < deadline {
+                panic!("Campaign is still active");
+            }
+
+            let total_raised: i128 = env.storage().instance().get(&DataKey::TotalRaised).unwrap();
+            let goal: i128 = env.storage().instance().get(&DataKey::Goal).unwrap();
+            if total_raised >= goal {
+                panic!("Campaign succeeded, refund not available");
+            }
         }
 
         let contributor_key = DataKey::Contributor(contributor.clone());
-        let contribution: i128 = env.storage().persistent().get(&contributor_key).unwrap_or(0);
+        let contribution: i128 = env
+            .storage()
+            .persistent()
+            .get(&contributor_key)
+            .unwrap_or(0);
         if contribution <= 0 {
             panic!("No contribution found for this address");
         }
@@ -188,10 +296,8 @@ impl FundingEscrowContract {
         client.transfer(&env.current_contract_address(), &contributor, &contribution);
 
         // Emit refund event
-        env.events().publish(
-            (symbol_short!("refund"), contributor),
-            contribution,
-        );
+        env.events()
+            .publish((symbol_short!("refund"), contributor), contribution);
     }
 
     /// Read campaign metadata.
@@ -201,7 +307,12 @@ impl FundingEscrowContract {
         let goal: i128 = env.storage().instance().get(&DataKey::Goal).unwrap();
         let deadline: u64 = env.storage().instance().get(&DataKey::Deadline).unwrap();
         let total_raised: i128 = env.storage().instance().get(&DataKey::TotalRaised).unwrap();
-        let withdrawn: bool = env.storage().instance().get(&DataKey::Withdrawn).unwrap_or(false);
+        let withdrawn: bool = env
+            .storage()
+            .instance()
+            .get(&DataKey::Withdrawn)
+            .unwrap_or(false);
+        let state = Self::get_state(env.clone());
 
         EscrowMetadata {
             token,
@@ -210,13 +321,17 @@ impl FundingEscrowContract {
             deadline,
             total_raised,
             withdrawn,
+            state,
         }
     }
 
     /// Read contributor contribution.
     pub fn get_contribution(env: Env, contributor: Address) -> i128 {
         let contributor_key = DataKey::Contributor(contributor);
-        env.storage().persistent().get(&contributor_key).unwrap_or(0)
+        env.storage()
+            .persistent()
+            .get(&contributor_key)
+            .unwrap_or(0)
     }
 }
 
