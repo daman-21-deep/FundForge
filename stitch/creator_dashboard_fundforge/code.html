@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Creator Dashboard | FundForge</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Geist:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        .mono-font {
+            font-family: 'Geist', monospace;
+        }
+        .glass-panel {
+            background: rgba(19, 19, 19, 0.8);
+            backdrop-filter: blur(12px);
+        }
+        .glow-border {
+            box-shadow: 0 0 0 1px rgba(68, 71, 72, 0.5);
+        }
+        .glow-border:hover {
+            box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.2);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-primary-fixed": "#1a1c1c",
+                      "tertiary-container": "#e2e2e2",
+                      "on-primary": "#2f3131",
+                      "on-surface-variant": "#c4c7c8",
+                      "secondary": "#c7c6c6",
+                      "surface-container-high": "#2a2a2a",
+                      "on-secondary-container": "#b8b8b8",
+                      "inverse-primary": "#5d5f5f",
+                      "on-secondary-fixed": "#1a1c1c",
+                      "primary": "#ffffff",
+                      "surface-tint": "#c6c6c7",
+                      "on-tertiary": "#2f3131",
+                      "primary-container": "#e2e2e2",
+                      "on-tertiary-container": "#636565",
+                      "surface-variant": "#353535",
+                      "surface-container": "#1f2020",
+                      "primary-fixed": "#e2e2e2",
+                      "tertiary-fixed-dim": "#c6c6c7",
+                      "on-tertiary-fixed": "#1a1c1c",
+                      "on-background": "#e4e2e1",
+                      "on-secondary": "#2f3131",
+                      "inverse-on-surface": "#303030",
+                      "on-primary-container": "#636565",
+                      "on-secondary-fixed-variant": "#464747",
+                      "tertiary": "#ffffff",
+                      "on-primary-fixed-variant": "#454747",
+                      "surface-bright": "#393939",
+                      "on-tertiary-fixed-variant": "#454747",
+                      "outline": "#8e9192",
+                      "error": "#ffb4ab",
+                      "on-error-container": "#ffdad6",
+                      "surface-container-highest": "#353535",
+                      "surface": "#131313",
+                      "inverse-surface": "#e4e2e1",
+                      "secondary-fixed": "#e3e2e2",
+                      "tertiary-fixed": "#e2e2e2",
+                      "secondary-fixed-dim": "#c7c6c6",
+                      "outline-variant": "#444748",
+                      "secondary-container": "#484949",
+                      "surface-container-low": "#1b1c1c",
+                      "surface-container-lowest": "#0e0e0e",
+                      "on-surface": "#e4e2e1",
+                      "surface-dim": "#131313",
+                      "error-container": "#93000a",
+                      "background": "#131313",
+                      "on-error": "#690005",
+                      "primary-fixed-dim": "#c6c6c7"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "stack-sm": "8px",
+                      "stack-md": "16px",
+                      "gutter": "24px",
+                      "container-max": "1280px",
+                      "stack-xs": "4px",
+                      "stack-lg": "32px",
+                      "margin-mobile": "16px",
+                      "stack-xl": "64px"
+              },
+              "fontFamily": {
+                      "body-base": ["Inter"],
+                      "label-mono": ["Geist"],
+                      "display-lg-mobile": ["Inter"],
+                      "headline-md": ["Inter"],
+                      "body-sm": ["Inter"],
+                      "table-data": ["Geist"],
+                      "display-lg": ["Inter"]
+              },
+              "fontSize": {
+                      "body-base": ["16px", {"lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "400"}],
+                      "label-mono": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                      "display-lg-mobile": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                      "body-sm": ["14px", {"lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "400"}],
+                      "table-data": ["13px", {"lineHeight": "18px", "letterSpacing": "-0.01em", "fontWeight": "400"}],
+                      "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.04em", "fontWeight": "700"}]
+              }
+            },
+          },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background min-h-screen selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopNavBar -->
+<nav class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-gutter h-16 max-w-container-max mx-auto bg-background border-b border-outline-variant">
+<div class="flex items-center gap-stack-lg">
+<span class="font-headline-md text-headline-md font-bold text-primary">FundForge</span>
+<div class="hidden md:flex gap-stack-md">
+<a class="text-on-surface-variant font-body-base text-body-base hover:text-primary transition-colors duration-200" href="#">Explore</a>
+<a class="text-on-surface-variant font-body-base text-body-base hover:text-primary transition-colors duration-200" href="#">Create</a>
+<a class="text-primary font-body-base text-body-base border-b-2 border-primary pb-1 transition-colors duration-200" href="#">Dashboard</a>
+</div>
+</div>
+<div class="flex items-center gap-stack-md">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">dark_mode</button>
+<button class="bg-primary text-on-primary-fixed px-stack-md py-stack-xs font-body-sm text-body-sm font-bold uppercase tracking-wider hover:opacity-90 transition-opacity">
+                Connect Wallet
+            </button>
+</div>
+</nav>
+<main class="pt-24 pb-stack-xl px-gutter max-w-container-max mx-auto">
+<!-- Header -->
+<header class="mb-stack-xl flex flex-col md:flex-row md:items-end justify-between gap-stack-md">
+<div>
+<p class="font-label-mono text-label-mono text-on-surface-variant uppercase mb-stack-xs">Verified Creator</p>
+<h1 class="font-display-lg text-display-lg text-primary">Creator Dashboard</h1>
+</div>
+<div class="flex gap-stack-sm">
+<button class="border border-outline-variant px-stack-md py-stack-sm font-body-sm text-body-sm text-primary hover:bg-surface-variant transition-colors">
+                    Download Report
+                </button>
+<button class="bg-primary text-on-primary-fixed px-stack-lg py-stack-sm font-body-sm text-body-sm font-bold hover:opacity-90 transition-opacity">
+                    Launch New Campaign
+                </button>
+</div>
+</header>
+<!-- Stats Grid -->
+<section class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-stack-md mb-stack-xl">
+<!-- Total Raised -->
+<div class="bg-surface-container-low border border-outline-variant p-stack-md hover:border-outline transition-colors group">
+<div class="flex justify-between items-start mb-stack-md">
+<span class="font-label-mono text-label-mono text-on-surface-variant uppercase">Total Raised</span>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors">payments</span>
+</div>
+<div class="flex items-baseline gap-stack-sm">
+<h3 class="font-headline-md text-headline-md font-bold text-primary">1.24M</h3>
+<span class="font-label-mono text-label-mono text-on-primary-container">XLM</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-stack-xs">+12.5% from last month</p>
+</div>
+<!-- Active Campaigns -->
+<div class="bg-surface-container-low border border-outline-variant p-stack-md hover:border-outline transition-colors group">
+<div class="flex justify-between items-start mb-stack-md">
+<span class="font-label-mono text-label-mono text-on-surface-variant uppercase">Active Campaigns</span>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors">rocket_launch</span>
+</div>
+<h3 class="font-headline-md text-headline-md font-bold text-primary">08</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-stack-xs">2 ending this week</p>
+</div>
+<!-- Supporters -->
+<div class="bg-surface-container-low border border-outline-variant p-stack-md hover:border-outline transition-colors group">
+<div class="flex justify-between items-start mb-stack-md">
+<span class="font-label-mono text-label-mono text-on-surface-variant uppercase">Supporters</span>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors">group</span>
+</div>
+<h3 class="font-headline-md text-headline-md font-bold text-primary">12,402</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-stack-xs">Across all projects</p>
+</div>
+<!-- Campaign Success Rate -->
+<div class="bg-surface-container-low border border-outline-variant p-stack-md hover:border-outline transition-colors group">
+<div class="flex justify-between items-start mb-stack-md">
+<span class="font-label-mono text-label-mono text-on-surface-variant uppercase">Success Rate</span>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary transition-colors">insights</span>
+</div>
+<h3 class="font-headline-md text-headline-md font-bold text-primary">94.2%</h3>
+<div class="w-full h-1 bg-outline-variant mt-stack-md overflow-hidden">
+<div class="h-full bg-primary" style="width: 94.2%"></div>
+</div>
+</div>
+</section>
+<!-- Main Content Area: Bento-ish Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-stack-lg">
+<!-- My Campaigns Table Section -->
+<section class="lg:col-span-8">
+<div class="bg-surface-container-lowest border border-outline-variant">
+<div class="p-gutter border-b border-outline-variant flex justify-between items-center">
+<h2 class="font-headline-md text-headline-md text-primary">My Campaigns</h2>
+<div class="flex items-center gap-stack-md">
+<span class="font-label-mono text-label-mono text-on-surface-variant">Filter by status</span>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer">filter_list</span>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead>
+<tr class="border-b border-outline-variant">
+<th class="px-gutter py-stack-md font-label-mono text-label-mono text-on-surface-variant uppercase">Campaign Name</th>
+<th class="px-gutter py-stack-md font-label-mono text-label-mono text-on-surface-variant uppercase">Status</th>
+<th class="px-gutter py-stack-md font-label-mono text-label-mono text-on-surface-variant uppercase">Goal</th>
+<th class="px-gutter py-stack-md font-label-mono text-label-mono text-on-surface-variant uppercase">Raised</th>
+<th class="px-gutter py-stack-md font-label-mono text-label-mono text-on-surface-variant uppercase">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="px-gutter py-stack-lg">
+<div class="flex items-center gap-stack-md">
+<div class="w-10 h-10 bg-surface-variant flex items-center justify-center border border-outline-variant">
+<span class="material-symbols-outlined text-on-surface-variant">architecture</span>
+</div>
+<span class="font-body-base text-body-base text-primary font-medium">Cyber-Core Modular PC</span>
+</div>
+</td>
+<td class="px-gutter py-stack-lg">
+<span class="px-stack-sm py-1 border border-primary text-[10px] font-bold uppercase text-primary">Active</span>
+</td>
+<td class="px-gutter py-stack-lg font-table-data text-table-data text-on-surface-variant">500,000 XLM</td>
+<td class="px-gutter py-stack-lg">
+<div class="flex flex-col gap-1">
+<span class="font-table-data text-table-data text-primary">342,000 XLM</span>
+<div class="w-24 h-1 bg-outline-variant">
+<div class="h-full bg-primary" style="width: 68%"></div>
+</div>
+</div>
+</td>
+<td class="px-gutter py-stack-lg">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary">more_horiz</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="px-gutter py-stack-lg">
+<div class="flex items-center gap-stack-md">
+<div class="w-10 h-10 bg-surface-variant flex items-center justify-center border border-outline-variant">
+<span class="material-symbols-outlined text-on-surface-variant">eco</span>
+</div>
+<span class="font-body-base text-body-base text-primary font-medium">Green-Hydrogen Plant</span>
+</div>
+</td>
+<td class="px-gutter py-stack-lg">
+<span class="px-stack-sm py-1 border border-outline-variant text-[10px] font-bold uppercase text-on-surface-variant">Draft</span>
+</td>
+<td class="px-gutter py-stack-lg font-table-data text-table-data text-on-surface-variant">2.5M XLM</td>
+<td class="px-gutter py-stack-lg font-table-data text-table-data text-on-surface-variant">0 XLM</td>
+<td class="px-gutter py-stack-lg">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary">more_horiz</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="px-gutter py-stack-lg">
+<div class="flex items-center gap-stack-md">
+<div class="w-10 h-10 bg-surface-variant flex items-center justify-center border border-outline-variant">
+<span class="material-symbols-outlined text-on-surface-variant">auto_awesome</span>
+</div>
+<span class="font-body-base text-body-base text-primary font-medium">Neural-Net Artist AI</span>
+</div>
+</td>
+<td class="px-gutter py-stack-lg">
+<span class="px-stack-sm py-1 bg-primary text-[10px] font-bold uppercase text-on-primary-fixed">Completed</span>
+</td>
+<td class="px-gutter py-stack-lg font-table-data text-table-data text-on-surface-variant">100,000 XLM</td>
+<td class="px-gutter py-stack-lg font-table-data text-table-data text-primary">125,000 XLM</td>
+<td class="px-gutter py-stack-lg">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary">more_horiz</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<!-- Smart Contract Panel -->
+<section class="lg:col-span-4">
+<div class="bg-surface-container-high border border-outline-variant flex flex-col h-full">
+<div class="p-gutter border-b border-outline-variant">
+<h2 class="font-headline-md text-headline-md text-primary flex items-center gap-stack-sm">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">terminal</span>
+                            Contracts
+                        </h2>
+</div>
+<div class="p-gutter space-y-stack-lg flex-grow">
+<!-- Contract Active -->
+<div class="space-y-stack-sm">
+<p class="font-label-mono text-label-mono text-on-surface-variant uppercase">Active Contracts</p>
+<div class="flex items-center gap-stack-sm">
+<div class="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
+<span class="font-body-base text-body-base text-primary">3 Live on Mainnet</span>
+</div>
+</div>
+<!-- Contract Address -->
+<div class="space-y-stack-sm">
+<p class="font-label-mono text-label-mono text-on-surface-variant uppercase">Contract Address</p>
+<div class="flex items-center justify-between bg-surface-container-lowest border border-outline-variant px-stack-md py-stack-sm">
+<span class="font-table-data text-table-data text-on-surface-variant truncate mr-stack-md">GC3A...D8P2...9XW1</span>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary text-sm">content_copy</button>
+</div>
+</div>
+<!-- Deployment Status -->
+<div class="space-y-stack-sm">
+<p class="font-label-mono text-label-mono text-on-surface-variant uppercase">Deployment Status</p>
+<div class="flex items-center gap-stack-md">
+<span class="font-body-sm text-body-sm text-primary">v2.4.0 Stable</span>
+<span class="text-[10px] font-label-mono border border-outline-variant px-1 text-on-surface-variant">TX: #89211</span>
+</div>
+</div>
+<!-- Latest Event -->
+<div class="space-y-stack-sm p-stack-md bg-surface border border-outline-variant">
+<p class="font-label-mono text-label-mono text-on-surface-variant uppercase">Latest Event</p>
+<div class="flex flex-col gap-1">
+<p class="font-table-data text-table-data text-primary">ContributionReceived</p>
+<p class="font-table-data text-[11px] text-on-surface-variant">2,500 XLM from G...W21</p>
+<p class="font-label-mono text-[10px] text-on-surface-variant mt-stack-xs">2 mins ago</p>
+</div>
+</div>
+</div>
+<div class="p-gutter mt-auto">
+<button class="w-full border border-primary text-primary py-stack-sm font-label-mono text-label-mono uppercase tracking-widest hover:bg-primary hover:text-on-primary-fixed transition-all">
+                            View Explorer
+                        </button>
+</div>
+</div>
+</section>
+</div>
+<!-- Recent Activity / Timeline Section -->
+<section class="mt-stack-xl">
+<h2 class="font-headline-md text-headline-md text-primary mb-stack-lg">Insights</h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-stack-lg">
+<div class="md:col-span-2 relative h-64 border border-outline-variant overflow-hidden">
+
+<div class="absolute inset-0 p-gutter flex flex-col justify-end bg-gradient-to-t from-background to-transparent">
+<p class="font-label-mono text-label-mono text-on-surface-variant uppercase">Funding Projection</p>
+<h3 class="font-headline-md text-headline-md text-primary">Estimated 2.1M XLM by Q4</h3>
+</div>
+</div>
+<div class="bg-surface-container-low border border-outline-variant p-gutter">
+<h3 class="font-label-mono text-label-mono text-on-surface-variant uppercase mb-stack-lg">Audit Status</h3>
+<div class="space-y-stack-md">
+<div class="flex justify-between items-center">
+<span class="font-body-sm text-body-sm text-primary">Security Layer</span>
+<span class="material-symbols-outlined text-primary text-sm">verified</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-body-sm text-body-sm text-primary">Identity Verification</span>
+<span class="material-symbols-outlined text-primary text-sm">verified</span>
+</div>
+<div class="flex justify-between items-center opacity-50">
+<span class="font-body-sm text-body-sm text-on-surface-variant">DAO Governance</span>
+<span class="material-symbols-outlined text-on-surface-variant text-sm">pending</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full py-stack-xl px-gutter max-w-container-max mx-auto flex flex-col md:flex-row justify-between items-center gap-stack-md border-t border-outline-variant">
+<div class="flex flex-col md:flex-row items-center gap-stack-md">
+<span class="font-headline-md text-headline-md font-bold text-primary">FundForge</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">© 2024 FundForge. Built on Stellar.</span>
+</div>
+<div class="flex gap-stack-lg">
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Terms</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Privacy</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Docs</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Status</a>
+</div>
+</footer>
+<script>
+        // Simple micro-interaction for hover states or values
+        document.querySelectorAll('tr').forEach(row => {
+            row.addEventListener('mouseenter', () => {
+                row.style.transform = 'translateX(4px)';
+                row.style.transition = 'transform 0.2s ease-out';
+            });
+            row.addEventListener('mouseleave', () => {
+                row.style.transform = 'translateX(0)';
+            });
+        });
+    </script>
+</body></html>

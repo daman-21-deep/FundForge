@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>FundForge | Create Campaign</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Geist:wght@400;500&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Inter:wght@100..900&display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .step-transition {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .progress-ring-circle {
+            transition: stroke-dashoffset 0.5s ease-in-out;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+        /* Custom scrollbar for minimalist look */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #444748; border-radius: 10px; }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed": "#1a1c1c",
+                        "tertiary-container": "#e2e2e2",
+                        "on-primary": "#2f3131",
+                        "on-surface-variant": "#c4c7c8",
+                        "secondary": "#c7c6c6",
+                        "surface-container-high": "#2a2a2a",
+                        "on-secondary-container": "#b8b8b8",
+                        "inverse-primary": "#5d5f5f",
+                        "on-secondary-fixed": "#1a1c1c",
+                        "primary": "#ffffff",
+                        "surface-tint": "#c6c6c7",
+                        "on-tertiary": "#2f3131",
+                        "primary-container": "#e2e2e2",
+                        "on-tertiary-container": "#636565",
+                        "surface-variant": "#353535",
+                        "surface-container": "#1f2020",
+                        "primary-fixed": "#e2e2e2",
+                        "tertiary-fixed-dim": "#c6c6c7",
+                        "on-tertiary-fixed": "#1a1c1c",
+                        "on-background": "#e4e2e1",
+                        "on-secondary": "#2f3131",
+                        "inverse-on-surface": "#303030",
+                        "on-primary-container": "#636565",
+                        "on-secondary-fixed-variant": "#464747",
+                        "tertiary": "#ffffff",
+                        "on-primary-fixed-variant": "#454747",
+                        "surface-bright": "#393939",
+                        "on-tertiary-fixed-variant": "#454747",
+                        "outline": "#8e9192",
+                        "error": "#ffb4ab",
+                        "on-error-container": "#ffdad6",
+                        "surface-container-highest": "#353535",
+                        "surface": "#131313",
+                        "inverse-surface": "#e4e2e1",
+                        "secondary-fixed": "#e3e2e2",
+                        "tertiary-fixed": "#e2e2e2",
+                        "secondary-fixed-dim": "#c7c6c6",
+                        "outline-variant": "#444748",
+                        "secondary-container": "#484949",
+                        "surface-container-low": "#1b1c1c",
+                        "surface-container-lowest": "#0e0e0e",
+                        "on-surface": "#e4e2e1",
+                        "surface-dim": "#131313",
+                        "error-container": "#93000a",
+                        "background": "#131313",
+                        "on-error": "#690005",
+                        "primary-fixed-dim": "#c6c6c7"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "stack-sm": "8px",
+                        "stack-md": "16px",
+                        "gutter": "24px",
+                        "container-max": "1280px",
+                        "stack-xs": "4px",
+                        "stack-lg": "32px",
+                        "margin-mobile": "16px",
+                        "stack-xl": "64px"
+                    },
+                    "fontFamily": {
+                        "body-base": ["Inter"],
+                        "label-mono": ["Geist"],
+                        "display-lg-mobile": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "table-data": ["Geist"],
+                        "display-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-base": ["16px", {"lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "400"}],
+                        "label-mono": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "display-lg-mobile": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "400"}],
+                        "table-data": ["13px", {"lineHeight": "18px", "letterSpacing": "-0.01em", "fontWeight": "400"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.04em", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-base min-h-screen selection:bg-primary selection:text-background">
+<!-- TopNavBar -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-gutter h-16 max-w-container-max mx-auto bg-background border-b border-outline-variant">
+<div class="flex items-center gap-stack-lg">
+<span class="font-headline-md text-headline-md font-bold text-primary">FundForge</span>
+<nav class="hidden md:flex items-center gap-stack-md text-body-base">
+<a class="text-on-surface-variant hover:text-primary transition-colors duration-200" href="#">Explore</a>
+<a class="text-primary border-b-2 border-primary pb-1" href="#">Create</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors duration-200" href="#">Dashboard</a>
+</nav>
+</div>
+<div class="flex items-center gap-stack-md">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">dark_mode</button>
+<button class="bg-primary text-on-primary-fixed px-stack-md py-stack-xs font-medium rounded-DEFAULT hover:opacity-90 transition-opacity">Connect Wallet</button>
+</div>
+</header>
+<main class="pt-24 pb-stack-xl px-gutter max-w-container-max mx-auto flex flex-col md:flex-row gap-stack-xl">
+<!-- Sidebar Navigation -->
+<aside class="w-full md:w-64 flex-shrink-0">
+<div class="sticky top-24 space-y-stack-lg">
+<h2 class="font-headline-md text-headline-md text-primary">New Campaign</h2>
+<nav class="flex flex-col gap-stack-sm">
+<!-- Step 1 Indicator -->
+<div class="flex items-center gap-stack-md p-stack-sm rounded-lg transition-colors bg-surface-container text-primary" id="nav-step-1">
+<span class="font-label-mono text-label-mono w-6 h-6 flex items-center justify-center border border-primary rounded-full">01</span>
+<span class="font-medium">Basic Info</span>
+</div>
+<!-- Step 2 Indicator -->
+<div class="flex items-center gap-stack-md p-stack-sm rounded-lg transition-colors text-on-surface-variant" id="nav-step-2">
+<span class="font-label-mono text-label-mono w-6 h-6 flex items-center justify-center border border-outline rounded-full">02</span>
+<span class="font-medium">Goal & Details</span>
+</div>
+<!-- Step 3 Indicator -->
+<div class="flex items-center gap-stack-md p-stack-sm rounded-lg transition-colors text-on-surface-variant" id="nav-step-3">
+<span class="font-label-mono text-label-mono w-6 h-6 flex items-center justify-center border border-outline rounded-full">03</span>
+<span class="font-medium">Review</span>
+</div>
+<!-- Step 4 Indicator -->
+<div class="flex items-center gap-stack-md p-stack-sm rounded-lg transition-colors text-on-surface-variant" id="nav-step-4">
+<span class="font-label-mono text-label-mono w-6 h-6 flex items-center justify-center border border-outline rounded-full">04</span>
+<span class="font-medium">Deploy</span>
+</div>
+</nav>
+<div class="p-stack-md bg-surface-container-low border border-outline-variant rounded-lg">
+<p class="text-body-sm text-on-surface-variant italic">"Transparency is the foundation of decentralized trust."</p>
+</div>
+</div>
+</aside>
+<!-- Form Canvas -->
+<section class="flex-grow max-w-2xl">
+<!-- Step 1: Basic Info -->
+<div class="step-transition" id="step-1-content">
+<div class="mb-stack-lg">
+<h3 class="font-headline-md text-headline-md text-primary mb-stack-xs">Project Foundation</h3>
+<p class="text-body-base text-on-surface-variant">Start by defining the core identity of your crowdfunding campaign.</p>
+</div>
+<form class="space-y-stack-lg">
+<div class="space-y-stack-sm">
+<label class="font-label-mono text-label-mono text-on-surface-variant uppercase tracking-widest">Campaign Title</label>
+<input class="w-full bg-surface border border-outline-variant focus:border-primary text-primary px-stack-md py-3 rounded-DEFAULT transition-colors outline-none placeholder:text-surface-variant" placeholder="e.g. Project Solar Flare" type="text"/>
+</div>
+<div class="space-y-stack-sm">
+<label class="font-label-mono text-label-mono text-on-surface-variant uppercase tracking-widest">Category</label>
+<select class="w-full bg-surface border border-outline-variant focus:border-primary text-primary px-stack-md py-3 rounded-DEFAULT transition-colors outline-none appearance-none">
+<option>Technology</option>
+<option>Infrastructure</option>
+<option>Open Source</option>
+<option>Community Art</option>
+</select>
+</div>
+<div class="space-y-stack-sm">
+<label class="font-label-mono text-label-mono text-on-surface-variant uppercase tracking-widest">Short Description</label>
+<textarea class="w-full bg-surface border border-outline-variant focus:border-primary text-primary px-stack-md py-3 rounded-DEFAULT transition-colors outline-none placeholder:text-surface-variant" placeholder="Briefly describe the mission..." rows="4"></textarea>
+</div>
+<div class="pt-stack-md flex justify-end">
+<button class="bg-primary text-on-primary-fixed px-stack-lg py-stack-md font-medium rounded-DEFAULT flex items-center gap-stack-sm hover:opacity-90 transition-opacity" onclick="goToStep(2)" type="button">
+                            Continue to Goals
+                            <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</form>
+</div>
+<!-- Step 2: Goal & Details (Hidden by default) -->
+<div class="hidden step-transition" id="step-2-content">
+<div class="mb-stack-lg">
+<h3 class="font-headline-md text-headline-md text-primary mb-stack-xs">Funding Metrics</h3>
+<p class="text-body-base text-on-surface-variant">Set your milestones and target goals in XLM.</p>
+</div>
+<form class="space-y-stack-lg">
+<div class="space-y-stack-sm">
+<label class="font-label-mono text-label-mono text-on-surface-variant uppercase tracking-widest">Funding Goal (XLM)</label>
+<div class="relative">
+<input class="w-full bg-surface border border-outline-variant focus:border-primary text-primary font-table-data px-stack-md py-3 rounded-DEFAULT transition-colors outline-none placeholder:text-surface-variant" placeholder="50,000" type="number"/>
+<span class="absolute right-4 top-3 text-on-surface-variant font-label-mono">XLM</span>
+</div>
+</div>
+<div class="space-y-stack-sm">
+<label class="font-label-mono text-label-mono text-on-surface-variant uppercase tracking-widest">Duration (Days)</label>
+<input class="w-full accent-primary bg-outline-variant h-1 rounded-full cursor-pointer" max="90" min="1" type="range" value="30"/>
+<div class="flex justify-between text-body-sm text-on-surface-variant">
+<span>1 Day</span>
+<span>30 Days</span>
+<span>90 Days</span>
+</div>
+</div>
+<div class="pt-stack-md flex justify-between">
+<button class="text-on-surface-variant hover:text-primary flex items-center gap-stack-sm transition-colors" onclick="goToStep(1)" type="button">
+<span class="material-symbols-outlined">arrow_back</span>
+                            Back
+                        </button>
+<button class="bg-primary text-on-primary-fixed px-stack-lg py-stack-md font-medium rounded-DEFAULT hover:opacity-90 transition-opacity" onclick="goToStep(3)" type="button">
+                            Review Campaign
+                        </button>
+</div>
+</form>
+</div>
+<!-- Step 3: Review (Hidden by default) -->
+<div class="hidden step-transition" id="step-3-content">
+<div class="mb-stack-lg">
+<h3 class="font-headline-md text-headline-md text-primary mb-stack-xs">Verification</h3>
+<p class="text-body-base text-on-surface-variant">Confirm all details before deploying your smart contract to Stellar.</p>
+</div>
+<div class="bg-surface-container border border-outline-variant rounded-lg overflow-hidden">
+<div class="p-stack-md border-b border-outline-variant flex justify-between items-center">
+<span class="font-label-mono text-on-surface-variant">SUMMARY</span>
+<button class="text-body-sm text-primary underline underline-offset-4" onclick="goToStep(1)">Edit</button>
+</div>
+<div class="p-stack-lg space-y-stack-md">
+<div class="grid grid-cols-2 gap-stack-md">
+<div>
+<span class="block text-body-sm text-on-surface-variant">Campaign</span>
+<span class="font-medium text-primary">Project Solar Flare</span>
+</div>
+<div>
+<span class="block text-body-sm text-on-surface-variant">Target</span>
+<span class="font-table-data text-primary">50,000.00 XLM</span>
+</div>
+<div>
+<span class="block text-body-sm text-on-surface-variant">Duration</span>
+<span class="text-primary">30 Days</span>
+</div>
+<div>
+<span class="block text-body-sm text-on-surface-variant">Network</span>
+<span class="text-primary">Stellar Mainnet</span>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-stack-lg pt-stack-md flex justify-between items-center">
+<button class="text-on-surface-variant hover:text-primary transition-colors" onclick="goToStep(2)" type="button">Back</button>
+<button class="bg-primary text-on-primary-fixed px-stack-xl py-stack-md font-bold rounded-DEFAULT hover:opacity-90 transition-opacity flex items-center gap-stack-sm" onclick="startDeployment()" type="button">
+<span class="material-symbols-outlined">rocket_launch</span>
+                        DEPLOY TO STELLAR
+                    </button>
+</div>
+</div>
+<!-- Step 4: Deploying State (Hidden by default) -->
+<div class="hidden step-transition flex flex-col items-center justify-center text-center py-stack-xl" id="step-4-content">
+<div class="relative w-48 h-48 mb-stack-lg">
+<!-- Progress Ring -->
+<svg class="w-full h-full">
+<circle class="text-surface-variant" cx="96" cy="96" fill="transparent" r="70" stroke="currentColor" stroke-width="4"></circle>
+<circle class="progress-ring-circle text-primary" cx="96" cy="96" fill="transparent" id="deployment-ring" r="70" stroke="currentColor" stroke-dasharray="440" stroke-dashoffset="440" stroke-linecap="square" stroke-width="4"></circle>
+</svg>
+<div class="absolute inset-0 flex items-center justify-center">
+<span class="font-label-mono text-headline-md text-primary" id="deployment-percent">0%</span>
+</div>
+</div>
+<h3 class="font-headline-md text-headline-md text-primary mb-stack-sm" id="deployment-status">Deploying Smart Contract...</h3>
+<p class="text-body-base text-on-surface-variant max-w-md mx-auto">Interacting with Stellar Soroban. Please do not close this window.</p>
+<div class="mt-stack-xl w-full max-w-sm opacity-0 transition-opacity duration-700" id="transaction-details">
+<div class="bg-surface-container-high p-stack-md rounded border border-outline-variant">
+<div class="flex items-center justify-between mb-stack-sm">
+<span class="text-body-sm text-on-surface-variant">Transaction Hash</span>
+<span class="material-symbols-outlined text-body-sm text-primary">check_circle</span>
+</div>
+<code class="block font-table-data text-body-sm text-primary break-all bg-surface p-2 rounded">
+                            0x7a2...4f9b2c3d4e5f6a7b8c9d0e1f2
+                        </code>
+</div>
+<button class="mt-stack-lg w-full bg-surface border border-primary text-primary px-stack-md py-stack-md font-medium rounded-DEFAULT hover:bg-surface-variant transition-colors">
+                        View on Stellar Expert
+                    </button>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full py-stack-xl px-gutter max-w-container-max mx-auto flex flex-col md:flex-row justify-between items-center gap-stack-md border-t border-outline-variant">
+<div class="flex flex-col items-center md:items-start gap-stack-xs">
+<span class="font-headline-md text-headline-md font-bold text-primary">FundForge</span>
+<span class="font-body-sm text-body-sm text-on-surface-variant">© 2024 FundForge. Built on Stellar.</span>
+</div>
+<nav class="flex items-center gap-stack-lg">
+<a class="text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Terms</a>
+<a class="text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Privacy</a>
+<a class="text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Docs</a>
+<a class="text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Status</a>
+</nav>
+</footer>
+<script>
+        function goToStep(step) {
+            // Hide all contents
+            document.querySelectorAll('[id$="-content"]').forEach(el => el.classList.add('hidden'));
+            // Show target step
+            document.getElementById(`step-${step}-content`).classList.remove('hidden');
+
+            // Update sidebar indicators
+            document.querySelectorAll('[id^="nav-step-"]').forEach((el, index) => {
+                const currentStep = index + 1;
+                const circle = el.querySelector('span:first-child');
+                
+                if (currentStep === step) {
+                    el.classList.add('bg-surface-container', 'text-primary');
+                    el.classList.remove('text-on-surface-variant');
+                    circle.classList.add('border-primary');
+                    circle.classList.remove('border-outline');
+                } else if (currentStep < step) {
+                    el.classList.remove('bg-surface-container', 'text-primary');
+                    el.classList.add('text-on-surface-variant');
+                    circle.classList.add('border-primary');
+                    circle.innerHTML = 'check';
+                    circle.classList.add('material-symbols-outlined', 'text-[16px]');
+                } else {
+                    el.classList.remove('bg-surface-container', 'text-primary');
+                    el.classList.add('text-on-surface-variant');
+                    circle.classList.remove('border-primary', 'material-symbols-outlined');
+                    circle.classList.add('border-outline');
+                    circle.innerHTML = currentStep.toString().padStart(2, '0');
+                }
+            });
+        }
+
+        function startDeployment() {
+            goToStep(4);
+            const ring = document.getElementById('deployment-ring');
+            const percentLabel = document.getElementById('deployment-percent');
+            const statusLabel = document.getElementById('deployment-status');
+            const details = document.getElementById('transaction-details');
+            
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += Math.floor(Math.random() * 5) + 2;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(interval);
+                    statusLabel.innerText = "Deployment Successful";
+                    details.classList.remove('opacity-0');
+                }
+                
+                const offset = 440 - (progress / 100) * 440;
+                ring.style.strokeDashoffset = offset;
+                percentLabel.innerText = `${progress}%`;
+            }, 150);
+        }
+    </script>
+</body></html>

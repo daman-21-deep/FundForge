@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>FundForge | Explore Campaigns</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Geist:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed": "#1a1c1c",
+                        "tertiary-container": "#e2e2e2",
+                        "on-primary": "#2f3131",
+                        "on-surface-variant": "#c4c7c8",
+                        "secondary": "#c7c6c6",
+                        "surface-container-high": "#2a2a2a",
+                        "on-secondary-container": "#b8b8b8",
+                        "inverse-primary": "#5d5f5f",
+                        "on-secondary-fixed": "#1a1c1c",
+                        "primary": "#ffffff",
+                        "surface-tint": "#c6c6c7",
+                        "on-tertiary": "#2f3131",
+                        "primary-container": "#e2e2e2",
+                        "on-tertiary-container": "#636565",
+                        "surface-variant": "#353535",
+                        "surface-container": "#1f2020",
+                        "primary-fixed": "#e2e2e2",
+                        "tertiary-fixed-dim": "#c6c6c7",
+                        "on-tertiary-fixed": "#1a1c1c",
+                        "on-background": "#e4e2e1",
+                        "on-secondary": "#2f3131",
+                        "inverse-on-surface": "#303030",
+                        "on-primary-container": "#636565",
+                        "on-secondary-fixed-variant": "#464747",
+                        "tertiary": "#ffffff",
+                        "on-primary-fixed-variant": "#454747",
+                        "surface-bright": "#393939",
+                        "on-tertiary-fixed-variant": "#454747",
+                        "outline": "#8e9192",
+                        "error": "#ffb4ab",
+                        "on-error-container": "#ffdad6",
+                        "surface-container-highest": "#353535",
+                        "surface": "#131313",
+                        "inverse-surface": "#e4e2e1",
+                        "secondary-fixed": "#e3e2e2",
+                        "tertiary-fixed": "#e2e2e2",
+                        "secondary-fixed-dim": "#c7c6c6",
+                        "outline-variant": "#444748",
+                        "secondary-container": "#484949",
+                        "surface-container-low": "#1b1c1c",
+                        "surface-container-lowest": "#0e0e0e",
+                        "on-surface": "#e4e2e1",
+                        "surface-dim": "#131313",
+                        "error-container": "#93000a",
+                        "background": "#131313",
+                        "on-error": "#690005",
+                        "primary-fixed-dim": "#c6c6c7"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "stack-sm": "8px",
+                        "stack-md": "16px",
+                        "gutter": "24px",
+                        "container-max": "1280px",
+                        "stack-xs": "4px",
+                        "stack-lg": "32px",
+                        "margin-mobile": "16px",
+                        "stack-xl": "64px"
+                    },
+                    "fontFamily": {
+                        "body-base": ["Inter"],
+                        "label-mono": ["Geist"],
+                        "display-lg-mobile": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "table-data": ["Geist"],
+                        "display-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-base": ["16px", {"lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "400"}],
+                        "label-mono": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "display-lg-mobile": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "400"}],
+                        "table-data": ["13px", {"lineHeight": "18px", "letterSpacing": "-0.01em", "fontWeight": "400"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.04em", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #131313;
+            color: #e4e2e1;
+        }
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 24px;
+        }
+        .hairline-border {
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .card-hover:hover {
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: scale(1.01);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        /* Custom scrollbar for minimalist feel */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #131313;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #353535;
+        }
+    </style>
+</head>
+<body class="font-body-base antialiased">
+<!-- TopNavBar Component -->
+<header class="fixed top-0 left-0 w-full z-50 bg-background dark:bg-background border-b border-outline-variant dark:border-outline-variant">
+<div class="max-w-container-max mx-auto px-gutter h-16 flex justify-between items-center">
+<div class="flex items-center gap-stack-lg">
+<span class="font-headline-md text-headline-md font-bold text-primary dark:text-primary tracking-tight">FundForge</span>
+<nav class="hidden md:flex gap-stack-md">
+<a class="font-body-base text-body-base text-primary dark:text-primary border-b-2 border-primary pb-1 transition-colors duration-200" href="#">Explore</a>
+<a class="font-body-base text-body-base text-on-surface-variant dark:text-on-surface-variant hover:text-primary transition-colors duration-200" href="#">Create</a>
+<a class="font-body-base text-body-base text-on-surface-variant dark:text-on-surface-variant hover:text-primary transition-colors duration-200" href="#">Dashboard</a>
+</nav>
+</div>
+<div class="flex items-center gap-stack-md">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">dark_mode</button>
+<button class="bg-primary text-on-primary-fixed px-stack-md py-stack-sm rounded font-body-base text-body-base font-semibold hover:opacity-90 transition-opacity">
+                    Connect Wallet
+                </button>
+</div>
+</div>
+</header>
+<main class="pt-24 pb-stack-xl max-w-container-max mx-auto px-gutter flex gap-stack-xl">
+<!-- Sidebar Filter -->
+<aside class="hidden lg:block w-64 shrink-0">
+<div class="sticky top-24 space-y-stack-lg">
+<div>
+<h3 class="font-label-mono text-label-mono text-on-surface-variant uppercase tracking-widest mb-stack-md">Categories</h3>
+<ul class="space-y-stack-sm">
+<li>
+<button class="flex items-center gap-stack-sm w-full text-left font-body-base text-body-base text-primary py-stack-xs px-stack-sm bg-surface-container rounded transition-colors">
+<span class="material-symbols-outlined text-[20px]">memory</span>
+                                Tech
+                            </button>
+</li>
+<li>
+<button class="flex items-center gap-stack-sm w-full text-left font-body-base text-body-base text-on-surface-variant py-stack-xs px-stack-sm hover:bg-surface-container rounded transition-colors">
+<span class="material-symbols-outlined text-[20px]">palette</span>
+                                Art
+                            </button>
+</li>
+<li>
+<button class="flex items-center gap-stack-sm w-full text-left font-body-base text-body-base text-on-surface-variant py-stack-xs px-stack-sm hover:bg-surface-container rounded transition-colors">
+<span class="material-symbols-outlined text-[20px]">public</span>
+                                Impact
+                            </button>
+</li>
+</ul>
+</div>
+<div class="pt-stack-lg border-t border-outline-variant">
+<h3 class="font-label-mono text-label-mono text-on-surface-variant uppercase tracking-widest mb-stack-md">Funded Amount</h3>
+<div class="space-y-stack-sm">
+<label class="flex items-center gap-stack-sm cursor-pointer group">
+<div class="w-4 h-4 border border-outline rounded-sm flex items-center justify-center group-hover:border-primary transition-colors">
+<div class="w-2 h-2 bg-primary scale-0 transition-transform"></div>
+</div>
+<span class="text-body-sm font-body-sm text-on-surface-variant">0 - 10k USD</span>
+</label>
+<label class="flex items-center gap-stack-sm cursor-pointer group">
+<div class="w-4 h-4 border border-outline rounded-sm flex items-center justify-center group-hover:border-primary transition-colors">
+<div class="w-2 h-2 bg-primary scale-0 transition-transform"></div>
+</div>
+<span class="text-body-sm font-body-sm text-on-surface-variant">10k - 50k USD</span>
+</label>
+</div>
+</div>
+</div>
+</aside>
+<!-- Content Area -->
+<section class="flex-1">
+<!-- Explore Header -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-stack-md mb-stack-xl">
+<div class="space-y-stack-sm">
+<h1 class="font-display-lg text-display-lg text-primary">Explore Campaigns</h1>
+<div class="relative w-full max-w-md">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full bg-surface-container border border-outline-variant rounded-lg pl-10 pr-4 py-2 focus:ring-1 focus:ring-primary focus:border-primary outline-none text-body-base transition-all" placeholder="Search projects..." type="text"/>
+</div>
+</div>
+<div class="flex border-b border-outline-variant">
+<button class="px-stack-md py-stack-sm border-b-2 border-primary text-primary font-body-sm">Newest</button>
+<button class="px-stack-md py-stack-sm text-on-surface-variant hover:text-primary transition-colors font-body-sm">Trending</button>
+<button class="px-stack-md py-stack-sm text-on-surface-variant hover:text-primary transition-colors font-body-sm">Ending Soon</button>
+</div>
+</div>
+<!-- Campaign Grid -->
+<div class="bento-grid">
+<!-- Card 1 -->
+<article class="bg-surface-container-low hairline-border rounded-xl overflow-hidden card-hover flex flex-col">
+<div class="relative h-48 w-full">
+<img class="w-full h-full object-cover" data-alt="A highly detailed 3D render of a futuristic modular hydroponic gardening system inside a clean, white-walled research facility. The lighting is crisp and atmospheric with cool blue undertones. Soft shadows and a sharp focus on the metallic and glass components emphasize the minimalist, high-tech Pro aesthetic. The scene is calm and represents sustainable innovation." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCeta45FUlyVoEJxPlQAgmrxEFLv6CzBTRFZX4EpmcHAC7p-pMjvY7tj9TNoLgFa9-8G2t2IF_V5WNK6uU4oS_yYOTWHT1j1fZttyZ8uHg3zjVY1ZeQNktM1z4UvRDLADBY3ZSEaxQ7VTxxBJnrqwTDUqQvME5Kp1Ht30RqVFwtB3xC6CuyyaKz1r_-odFr40-jGJ4Kx15em1LT13TSEjkz1TCPhqKFjXBVwLpZv-V5jSND2ZlFSiD4Ng"/>
+<div class="absolute top-4 left-4 bg-background/80 backdrop-blur-md px-2 py-1 rounded text-[10px] font-label-mono text-primary border border-outline-variant">TECH</div>
+</div>
+<div class="p-stack-md flex-1 flex flex-col">
+<div class="mb-stack-md">
+<h3 class="font-headline-md text-headline-md text-primary mb-1">AeroGarden X-1</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">by <span class="text-primary hover:underline cursor-pointer">Stellar Labs</span></p>
+</div>
+<div class="mt-auto space-y-stack-md">
+<div class="space-y-2">
+<div class="flex justify-between font-label-mono text-label-mono text-on-surface-variant">
+<span>75% FUNDED</span>
+<span>10 DAYS LEFT</span>
+</div>
+<div class="w-full h-1 bg-surface-container-highest">
+<div class="bg-primary h-full transition-all duration-1000" style="width: 75%"></div>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="flex-1 bg-primary text-on-primary-fixed py-2 rounded font-body-sm font-semibold hover:opacity-90 transition-all">Donate</button>
+<button class="px-4 border border-outline-variant hover:border-primary transition-colors rounded">
+<span class="material-symbols-outlined align-middle">visibility</span>
+</button>
+</div>
+</div>
+</div>
+</article>
+<!-- Card 2 -->
+<article class="bg-surface-container-low hairline-border rounded-xl overflow-hidden card-hover flex flex-col">
+<div class="relative h-48 w-full">
+<img class="w-full h-full object-cover" data-alt="A sophisticated macro photograph of high-end, minimalist sustainable sneakers made from recycled ocean plastic. The sneakers are displayed on a polished black surface with a dark, moody background and soft highlights catching the texture of the materials. Monochromatic palette with extreme detail on the stitching and fabric grain. Professional studio lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA4hI4fvZDReZXb-lWklojoM3mvLBy1mXnzb-h-iTp1A_bMGTKzQttP7VF88lEn18GEWJAuuLyDha6IUEFbT4pWV4BHufqzqUhSKGxkcbjybtZ3sK8MdcfpdGWSh0ISAE17_7M42LNKiVF4qsz8bWG5EYDiC9wR8V-RBCkRJ8SOU3JomYzA5b7xNWNWq1rO7sUPLbevcdqfTU7Z9mYoHy7L3zMDbnxbvQqcirp5lRIQfLy99Mu7gOfPFg"/>
+<div class="absolute top-4 left-4 bg-background/80 backdrop-blur-md px-2 py-1 rounded text-[10px] font-label-mono text-primary border border-outline-variant">IMPACT</div>
+</div>
+<div class="p-stack-md flex-1 flex flex-col">
+<div class="mb-stack-md">
+<h3 class="font-headline-md text-headline-md text-primary mb-1">EcoStride Core</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">by <span class="text-primary hover:underline cursor-pointer">EcoThread Collective</span></p>
+</div>
+<div class="mt-auto space-y-stack-md">
+<div class="space-y-2">
+<div class="flex justify-between font-label-mono text-label-mono text-on-surface-variant">
+<span>42% FUNDED</span>
+<span>18 DAYS LEFT</span>
+</div>
+<div class="w-full h-1 bg-surface-container-highest">
+<div class="bg-primary h-full transition-all duration-1000" style="width: 42%"></div>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="flex-1 bg-primary text-on-primary-fixed py-2 rounded font-body-sm font-semibold hover:opacity-90 transition-all">Donate</button>
+<button class="px-4 border border-outline-variant hover:border-primary transition-colors rounded">
+<span class="material-symbols-outlined align-middle">visibility</span>
+</button>
+</div>
+</div>
+</div>
+</article>
+<!-- Card 3 -->
+<article class="bg-surface-container-low hairline-border rounded-xl overflow-hidden card-hover flex flex-col">
+<div class="relative h-48 w-full">
+<img class="w-full h-full object-cover" data-alt="An ethereal, monochromatic digital painting showing a lone figure walking through a minimalist geometric landscape of massive obsidian pillars under a silver sky. The style is reminiscent of high-end concept art with fine line work and subtle grey gradients. Atmospheric fog provides depth and a sense of quiet mystery. The image is strictly black, white, and silver." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCNoZ027tBr7ctwLdGScjbmQPe2CvB0ft4JlZ8Jbf3IOX9QE5xPBwZNwqPFgXg1-p_R4Z4Im1aGyHF2uuRzzCDiDDzKFf-NAaeTqWISduY9MpwGoJ-BM59Q0O277aZvOilK58pKYRx9ycAh9QuF4aK4o9-_BYW_K0LQDMb47twb19UVI5mVNQrQQ51gITSJS7A7kwWhVfoSk4oWOUs_PdarHRr6f-ZW42O7YauRASgbXOBE4sUoWebavw"/>
+<div class="absolute top-4 left-4 bg-background/80 backdrop-blur-md px-2 py-1 rounded text-[10px] font-label-mono text-primary border border-outline-variant">ART</div>
+</div>
+<div class="p-stack-md flex-1 flex flex-col">
+<div class="mb-stack-md">
+<h3 class="font-headline-md text-headline-md text-primary mb-1">Monolith: The Exhibition</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">by <span class="text-primary hover:underline cursor-pointer">K. Sorenson</span></p>
+</div>
+<div class="mt-auto space-y-stack-md">
+<div class="space-y-2">
+<div class="flex justify-between font-label-mono text-label-mono text-on-surface-variant">
+<span>91% FUNDED</span>
+<span>2 DAYS LEFT</span>
+</div>
+<div class="w-full h-1 bg-surface-container-highest">
+<div class="bg-primary h-full transition-all duration-1000" style="width: 91%"></div>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="flex-1 bg-primary text-on-primary-fixed py-2 rounded font-body-sm font-semibold hover:opacity-90 transition-all">Donate</button>
+<button class="px-4 border border-outline-variant hover:border-primary transition-colors rounded">
+<span class="material-symbols-outlined align-middle">visibility</span>
+</button>
+</div>
+</div>
+</div>
+</article>
+<!-- Card 4 -->
+<article class="bg-surface-container-low hairline-border rounded-xl overflow-hidden card-hover flex flex-col">
+<div class="relative h-48 w-full">
+<img class="w-full h-full object-cover" data-alt="A clean, minimalist workspace featuring a sleek aluminum mechanical keyboard with custom monochromatic keycaps. The lighting is soft and top-down, highlighting the precision-milled edges of the keyboard case. The setting is a professional studio with a neutral grey background, embodying high-end technical craftsmanship and elite product design." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB1Za_dkIfRnL4VqwyxUcqioDJCQVd3GBlma9fuByyFH5IcnAZ11lWiBNli1FaNrfMx-hiGcqerSbeoiTYgrfgPlO4117uwkvFxGC-Uw9JHzV26VyrwGcWGGbkhrsi5uw_7aI0NveAtpscB_vsa0w7iC7ytbOe0cP4u8OH-xFYazxLnDc25GvtNeqUaDT0mJ2r9IlDhxNQCnBCibwRtxxzNQYuXBHPvhHjCbGJ3TdjBTGUXDXdiHHzMgQ"/>
+<div class="absolute top-4 left-4 bg-background/80 backdrop-blur-md px-2 py-1 rounded text-[10px] font-label-mono text-primary border border-outline-variant">TECH</div>
+</div>
+<div class="p-stack-md flex-1 flex flex-col">
+<div class="mb-stack-md">
+<h3 class="font-headline-md text-headline-md text-primary mb-1">Machina-1 Keyboard</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">by <span class="text-primary hover:underline cursor-pointer">Null-Set Design</span></p>
+</div>
+<div class="mt-auto space-y-stack-md">
+<div class="space-y-2">
+<div class="flex justify-between font-label-mono text-label-mono text-on-surface-variant">
+<span>60% FUNDED</span>
+<span>24 DAYS LEFT</span>
+</div>
+<div class="w-full h-1 bg-surface-container-highest">
+<div class="bg-primary h-full transition-all duration-1000" style="width: 60%"></div>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="flex-1 bg-primary text-on-primary-fixed py-2 rounded font-body-sm font-semibold hover:opacity-90 transition-all">Donate</button>
+<button class="px-4 border border-outline-variant hover:border-primary transition-colors rounded">
+<span class="material-symbols-outlined align-middle">visibility</span>
+</button>
+</div>
+</div>
+</div>
+</article>
+<!-- Card 5 -->
+<article class="bg-surface-container-low hairline-border rounded-xl overflow-hidden card-hover flex flex-col">
+<div class="relative h-48 w-full">
+<img class="w-full h-full object-cover" data-alt="An artistic black and white portrait of a modern solar farm located in a vast desert. The solar panels create repetitive geometric patterns that recede into a hazy horizon. The composition is stark and architectural, utilizing high contrast between the deep blacks of the panel shadows and the brilliant white of the desert sun. Minimalist and elite aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBwRZY6xiaZhy8ogZcomzEeLhZpdH6FC7ZRe77DY-WlkBtuXJZzqmgawmBTepkATrGx0DKfqBeLVUhPXSIoCgtwauxWLGrdJvyzK-EKL3m6PJRygPKSzMN1MmjglW0m1Zwk6kdqQNwrJrjVGt8j3TwaWWCeBqoziEVVy2uyTS0F2YnG2MoFCJwlcTqkYQINq_8W8OmEZBMtKJWdYRLLNj1-zRhCAqG8hVPgtkDLDokmPzvsV0UifI2WLA"/>
+<div class="absolute top-4 left-4 bg-background/80 backdrop-blur-md px-2 py-1 rounded text-[10px] font-label-mono text-primary border border-outline-variant">IMPACT</div>
+</div>
+<div class="p-stack-md flex-1 flex flex-col">
+<div class="mb-stack-md">
+<h3 class="font-headline-md text-headline-md text-primary mb-1">SolarGrid Saharan</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">by <span class="text-primary hover:underline cursor-pointer">Helios Energy</span></p>
+</div>
+<div class="mt-auto space-y-stack-md">
+<div class="space-y-2">
+<div class="flex justify-between font-label-mono text-label-mono text-on-surface-variant">
+<span>15% FUNDED</span>
+<span>45 DAYS LEFT</span>
+</div>
+<div class="w-full h-1 bg-surface-container-highest">
+<div class="bg-primary h-full transition-all duration-1000" style="width: 15%"></div>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="flex-1 bg-primary text-on-primary-fixed py-2 rounded font-body-sm font-semibold hover:opacity-90 transition-all">Donate</button>
+<button class="px-4 border border-outline-variant hover:border-primary transition-colors rounded">
+<span class="material-symbols-outlined align-middle">visibility</span>
+</button>
+</div>
+</div>
+</div>
+</article>
+<!-- Card 6 -->
+<article class="bg-surface-container-low hairline-border rounded-xl overflow-hidden card-hover flex flex-col">
+<div class="relative h-48 w-full">
+<img class="w-full h-full object-cover" data-alt="A minimal and modern vinyl record player design featuring a transparent acrylic platter and a carbon fiber tonearm. The turntable is positioned on a dark slate surface, illuminated by a single spotlight from the side creating dramatic shadows. The overall vibe is audiophile-grade luxury with a monochromatic, technical focus on materials and precision engineering." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAxnSSuYw73Q7bjN4X-LZupiTwQWLJIwstzqlaXcWpuDacIdUeQyj792LJ46hrL50DsdVrgB-chHc842YgLyX54KRT2grebTG-xmWTQbjx1-pR4UnJbsUonR41G4yqvM5gv43QvW9tI5QqOb1O-XRSt3rtcQIEvRYca9xDiprhoUdFQ3LAz4lrw4D_zk2XZkoKuErBscqxfyR4IZeFnk9oRb4HdBb77t8asnZ7Mc8vdLVEm6ORstv41hg"/>
+<div class="absolute top-4 left-4 bg-background/80 backdrop-blur-md px-2 py-1 rounded text-[10px] font-label-mono text-primary border border-outline-variant">ART</div>
+</div>
+<div class="p-stack-md flex-1 flex flex-col">
+<div class="mb-stack-md">
+<h3 class="font-headline-md text-headline-md text-primary mb-1">Plinth Hi-Fi Turntable</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">by <span class="text-primary hover:underline cursor-pointer">Sonic Foundry</span></p>
+</div>
+<div class="mt-auto space-y-stack-md">
+<div class="space-y-2">
+<div class="flex justify-between font-label-mono text-label-mono text-on-surface-variant">
+<span>88% FUNDED</span>
+<span>5 DAYS LEFT</span>
+</div>
+<div class="w-full h-1 bg-surface-container-highest">
+<div class="bg-primary h-full transition-all duration-1000" style="width: 88%"></div>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="flex-1 bg-primary text-on-primary-fixed py-2 rounded font-body-sm font-semibold hover:opacity-90 transition-all">Donate</button>
+<button class="px-4 border border-outline-variant hover:border-primary transition-colors rounded">
+<span class="material-symbols-outlined align-middle">visibility</span>
+</button>
+</div>
+</div>
+</div>
+</article>
+</div>
+<!-- Pagination -->
+<div class="mt-stack-xl flex justify-center items-center gap-stack-md">
+<button class="w-10 h-10 flex items-center justify-center rounded border border-outline-variant text-on-surface-variant hover:border-primary hover:text-primary transition-all">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<div class="flex gap-2">
+<button class="w-10 h-10 flex items-center justify-center rounded bg-primary text-on-primary-fixed font-label-mono">1</button>
+<button class="w-10 h-10 flex items-center justify-center rounded border border-outline-variant text-on-surface-variant hover:border-primary hover:text-primary transition-all font-label-mono">2</button>
+<button class="w-10 h-10 flex items-center justify-center rounded border border-outline-variant text-on-surface-variant hover:border-primary hover:text-primary transition-all font-label-mono">3</button>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded border border-outline-variant text-on-surface-variant hover:border-primary hover:text-primary transition-all">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</section>
+</main>
+<!-- Footer Component -->
+<footer class="w-full py-stack-xl px-gutter max-w-container-max mx-auto flex flex-col md:flex-row justify-between items-center gap-stack-md border-t border-outline-variant dark:border-outline-variant bg-surface dark:bg-surface">
+<div class="flex flex-col md:items-start items-center gap-2">
+<span class="font-headline-md text-headline-md font-bold text-primary">FundForge</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">© 2024 FundForge. Built on Stellar.</p>
+</div>
+<nav class="flex gap-stack-lg">
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Terms</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Privacy</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Docs</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Status</a>
+</nav>
+</footer>
+<script>
+        // Simple micro-interaction for donation buttons
+        document.querySelectorAll('button').forEach(button => {
+            button.addEventListener('mousedown', () => {
+                button.style.transform = 'scale(0.98)';
+            });
+            button.addEventListener('mouseup', () => {
+                button.style.transform = 'scale(1)';
+            });
+        });
+
+        // Search highlight simulation
+        const searchInput = document.querySelector('input[type="text"]');
+        searchInput.addEventListener('focus', () => {
+            searchInput.parentElement.classList.add('ring-1', 'ring-primary');
+        });
+        searchInput.addEventListener('blur', () => {
+            searchInput.parentElement.classList.remove('ring-1', 'ring-primary');
+        });
+    </script>
+</body></html>

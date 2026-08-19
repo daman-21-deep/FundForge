@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>FundForge | Campaign Details</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Geist:wght@400;500&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&family=Inter:wght@100..900&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed": "#1a1c1c",
+                        "tertiary-container": "#e2e2e2",
+                        "on-primary": "#2f3131",
+                        "on-surface-variant": "#c4c7c8",
+                        "secondary": "#c7c6c6",
+                        "surface-container-high": "#2a2a2a",
+                        "on-secondary-container": "#b8b8b8",
+                        "inverse-primary": "#5d5f5f",
+                        "on-secondary-fixed": "#1a1c1c",
+                        "primary": "#ffffff",
+                        "surface-tint": "#c6c6c7",
+                        "on-tertiary": "#2f3131",
+                        "primary-container": "#e2e2e2",
+                        "on-tertiary-container": "#636565",
+                        "surface-variant": "#353535",
+                        "surface-container": "#1f2020",
+                        "primary-fixed": "#e2e2e2",
+                        "tertiary-fixed-dim": "#c6c6c7",
+                        "on-tertiary-fixed": "#1a1c1c",
+                        "on-background": "#e4e2e1",
+                        "on-secondary": "#2f3131",
+                        "inverse-on-surface": "#303030",
+                        "on-primary-container": "#636565",
+                        "on-secondary-fixed-variant": "#464747",
+                        "tertiary": "#ffffff",
+                        "on-primary-fixed-variant": "#454747",
+                        "surface-bright": "#393939",
+                        "on-tertiary-fixed-variant": "#454747",
+                        "outline": "#8e9192",
+                        "error": "#ffb4ab",
+                        "on-error-container": "#ffdad6",
+                        "surface-container-highest": "#353535",
+                        "surface": "#131313",
+                        "inverse-surface": "#e4e2e1",
+                        "secondary-fixed": "#e3e2e2",
+                        "tertiary-fixed": "#e2e2e2",
+                        "secondary-fixed-dim": "#c7c6c6",
+                        "outline-variant": "#444748",
+                        "secondary-container": "#484949",
+                        "surface-container-low": "#1b1c1c",
+                        "surface-container-lowest": "#0e0e0e",
+                        "on-surface": "#e4e2e1",
+                        "surface-dim": "#131313",
+                        "error-container": "#93000a",
+                        "background": "#131313",
+                        "on-error": "#690005",
+                        "primary-fixed-dim": "#c6c6c7"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "stack-sm": "8px",
+                        "stack-md": "16px",
+                        "gutter": "24px",
+                        "container-max": "1280px",
+                        "stack-xs": "4px",
+                        "stack-lg": "32px",
+                        "margin-mobile": "16px",
+                        "stack-xl": "64px"
+                    },
+                    "fontFamily": {
+                        "body-base": ["Inter"],
+                        "label-mono": ["Geist"],
+                        "display-lg-mobile": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "table-data": ["Geist"],
+                        "display-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-base": ["16px", {"lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "400"}],
+                        "label-mono": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "display-lg-mobile": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "400"}],
+                        "table-data": ["13px", {"lineHeight": "18px", "letterSpacing": "-0.01em", "fontWeight": "400"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.04em", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #131313; }
+        ::-webkit-scrollbar-thumb { background: #444748; }
+        .glass-blur { backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+        .hero-gradient { background: linear-gradient(180deg, rgba(19,19,19,0) 0%, rgba(19,19,19,0.9) 100%); }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-base antialiased">
+<!-- TopNavBar -->
+<header class="fixed top-0 left-0 w-full z-50 bg-background/80 glass-blur border-b border-outline-variant h-16">
+<nav class="max-w-container-max mx-auto px-gutter h-full flex justify-between items-center">
+<div class="flex items-center gap-stack-lg">
+<span class="font-headline-md text-headline-md font-bold text-primary">FundForge</span>
+<div class="hidden md:flex gap-stack-md">
+<a class="font-body-base text-body-base text-on-surface-variant hover:text-primary transition-colors duration-200" href="#">Explore</a>
+<a class="font-body-base text-body-base text-on-surface-variant hover:text-primary transition-colors duration-200" href="#">Create</a>
+<a class="font-body-base text-body-base text-on-surface-variant hover:text-primary transition-colors duration-200" href="#">Dashboard</a>
+</div>
+</div>
+<div class="flex items-center gap-stack-md">
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">dark_mode</span>
+</button>
+<button class="bg-primary text-on-primary px-stack-md py-2 font-bold hover:opacity-90 transition-opacity">
+                    Connect Wallet
+                </button>
+</div>
+</nav>
+</header>
+<main class="pt-16 pb-stack-xl">
+<!-- Hero Section -->
+<section class="relative w-full h-[614px] overflow-hidden">
+<div class="absolute inset-0 w-full h-full bg-cover bg-center" data-alt="A high-resolution, professional cinematic shot of a futuristic sustainable vertical forest city during twilight. The image features clean, minimalist architectural lines, cool blue and deep grey tones, with subtle warm white lights glowing from windows. The atmosphere is sophisticated, elite, and high-tech, perfectly capturing a high-stakes infrastructure project aesthetic." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuC838jwqbXkTOJG4mRuGh8wGrYs24O065bzI7hB5AvYdp9mSYMAWi6IdEXJF8K8Uc4aNAlPZgi9I79zGecaOFNBnAH_MSNpCBpjhP7e93T4gliVPQht14_3xifuvTZl33437v8f-8IVjipUD0OPUJ5FPQFt658vAhxJWYGWoFczyHJE3TDzF_gPFvC33mG-Llb2gpYGf_tSBmHhpqnzYcyR5kZC3o1wkn3oDG-t1J75TOmvxDbINppSyA')"></div>
+<div class="absolute inset-0 hero-gradient"></div>
+<div class="absolute bottom-0 left-0 w-full p-gutter">
+<div class="max-w-container-max mx-auto">
+<div class="flex flex-col gap-stack-sm">
+<div class="flex items-center gap-stack-sm">
+<span class="bg-primary text-on-primary text-[10px] uppercase tracking-widest px-2 py-0.5 font-bold">Tech & Infrastructure</span>
+<span class="text-on-surface-variant text-body-sm">• Verified Campaign</span>
+</div>
+<h1 class="font-display-lg text-display-lg text-primary max-w-3xl">Project Verdant: Building the First Decentralized Vertical Forest City</h1>
+<div class="flex items-center gap-stack-sm mt-stack-md">
+<div class="w-8 h-8 rounded-full bg-surface-container-high border border-outline-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-sm">person</span>
+</div>
+<span class="font-body-sm text-on-surface-variant">Created by <span class="text-primary font-medium">Lumina Architects</span></span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<div class="max-w-container-max mx-auto px-gutter grid grid-cols-12 gap-stack-xl mt-stack-xl">
+<!-- Left Column: Content -->
+<div class="col-span-12 lg:col-span-8 flex flex-col gap-stack-xl">
+<!-- Progress Stats -->
+<div class="bg-surface-container-low border border-outline-variant p-stack-lg">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-stack-xl">
+<div class="flex flex-col gap-stack-xs">
+<span class="font-label-mono text-label-mono text-on-surface-variant uppercase">Raised</span>
+<div class="flex items-baseline gap-1">
+<span class="font-display-lg-mobile text-display-lg-mobile text-primary">842,500</span>
+<span class="font-label-mono text-label-mono text-on-surface-variant">XLM</span>
+</div>
+<div class="w-full h-1 bg-outline-variant mt-2">
+<div class="h-full bg-primary" style="width: 72%"></div>
+</div>
+<span class="font-label-mono text-label-mono text-on-surface-variant mt-1">72.4% of 1,200,000 XLM goal</span>
+</div>
+<div class="flex flex-col gap-stack-xs">
+<span class="font-label-mono text-label-mono text-on-surface-variant uppercase">Backers</span>
+<span class="font-display-lg-mobile text-display-lg-mobile text-primary">1,204</span>
+<span class="font-label-mono text-label-mono text-on-surface-variant">Individual supporters</span>
+</div>
+<div class="flex flex-col gap-stack-xs">
+<span class="font-label-mono text-label-mono text-on-surface-variant uppercase">Time Left</span>
+<span class="font-display-lg-mobile text-display-lg-mobile text-primary">14 Days</span>
+<span class="font-label-mono text-label-mono text-on-surface-variant">Campaign ends Oct 24</span>
+</div>
+</div>
+</div>
+<!-- Main Text -->
+<article class="prose prose-invert max-w-none">
+<h2 class="font-headline-md text-headline-md text-primary mb-stack-md">The Vision</h2>
+<p class="font-body-base text-body-base text-on-surface-variant leading-relaxed mb-stack-md">
+                        Project Verdant is a pioneering initiative to merge urban living with large-scale ecosystem restoration. We are designing a self-sustaining vertical forest that houses 5,000 residents while generating its own clean energy and managing 100% of its waste. 
+                    </p>
+<p class="font-body-base text-body-base text-on-surface-variant leading-relaxed mb-stack-md">
+                        By leveraging the Stellar network for transparent, cross-border funding, we are ensuring that every XLM contributed is tracked directly to structural milestones. This isn't just a building; it's a blueprint for the future of decentralized urbanism.
+                    </p>
+<div class="my-stack-xl aspect-video bg-surface-container-highest border border-outline-variant flex items-center justify-center relative group cursor-pointer overflow-hidden">
+<div class="absolute inset-0 w-full h-full bg-cover bg-center grayscale transition-all duration-700 group-hover:scale-105 group-hover:grayscale-0" data-alt="A detailed architectural render of a vertical forest structure. The building features lush green terraces overflowing with diverse plant life against a stark, modern white concrete frame. The lighting is bright and airy, representing a clean-tech, sustainable future. This is a technical, high-end visual suitable for a professional investment pitch." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAQrdnxWC3x4BaPwWEwRGyG_bkImxEIuebLV1ylGynq8yqVaf8kpLoLbk0zTgA4DPO1ZJcdDLWA_jZaXNaLWcpMe72oeiptaSfmwiui-TrM4Mxytt6xIcRuobOBz-rjrWGiI7TbVn7uk00V8-vC62yxqaF-xfB8hMQPEsLX9e8h0Spk6FqJsLKx_83JHH_hKu9nvtd0TqBPJ3EpUJhsaFtgj8ajI2njlGDnUiTK7UxlZe6FAc_UfgTqUQ')"></div>
+<div class="z-10 w-16 h-16 rounded-full bg-primary text-on-primary flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-3xl">play_arrow</span>
+</div>
+</div>
+<h3 class="font-headline-md text-headline-md text-primary mt-stack-xl mb-stack-md">Technical Roadmap</h3>
+<ul class="space-y-stack-md list-none p-0">
+<li class="flex gap-stack-md border-l border-outline-variant pl-stack-md">
+<div>
+<span class="font-label-mono text-label-mono text-primary">Q4 2024</span>
+<p class="text-on-surface-variant">Final structural blueprints and site acquisition in the Neo-Tokyo Special Economic Zone.</p>
+</div>
+</li>
+<li class="flex gap-stack-md border-l border-outline-variant pl-stack-md">
+<div>
+<span class="font-label-mono text-label-mono text-on-surface-variant">Q1 2025</span>
+<p class="text-on-surface-variant">Smart contract deployment for automated stakeholder distribution and phase-one ground breaking.</p>
+</div>
+</li>
+</ul>
+</article>
+</div>
+<!-- Right Column: Donation & Activity -->
+<aside class="col-span-12 lg:col-span-4 flex flex-col gap-stack-lg">
+<!-- Donation Panel -->
+<div class="bg-surface-container border border-outline-variant p-stack-lg sticky top-24">
+<h3 class="font-headline-md text-headline-md text-primary mb-stack-md">Support Project</h3>
+<div class="flex flex-col gap-stack-md">
+<div class="relative">
+<input class="w-full bg-surface-container-high border border-outline-variant p-4 font-table-data text-xl text-primary focus:outline-none focus:border-primary transition-colors" placeholder="0.00" type="number"/>
+<span class="absolute right-4 top-1/2 -translate-y-1/2 font-label-mono text-on-surface-variant">XLM</span>
+</div>
+<div class="grid grid-cols-4 gap-stack-sm">
+<button class="border border-outline-variant py-2 font-label-mono hover:border-primary transition-colors" onclick="setAmount(10)">10</button>
+<button class="border border-outline-variant py-2 font-label-mono hover:border-primary transition-colors" onclick="setAmount(25)">25</button>
+<button class="border border-outline-variant py-2 font-label-mono hover:border-primary transition-colors" onclick="setAmount(50)">50</button>
+<button class="border border-outline-variant py-2 font-label-mono hover:border-primary transition-colors" onclick="setAmount(100)">100</button>
+</div>
+<button class="w-full bg-primary text-on-primary py-4 font-bold text-lg flex items-center justify-center gap-stack-sm hover:opacity-90 transition-all active:scale-[0.98]" id="supportBtn">
+                            Support with Freighter
+                        </button>
+<p class="font-body-sm text-body-sm text-on-surface-variant text-center px-4">
+                            By contributing, you agree to the project's Terms of Governance and Milestone Release schedule.
+                        </p>
+</div>
+<!-- Activity Feed -->
+<div class="mt-stack-xl border-t border-outline-variant pt-stack-lg">
+<div class="flex justify-between items-center mb-stack-md">
+<h4 class="font-label-mono text-label-mono text-primary uppercase">Live Activity</h4>
+<span class="w-2 h-2 bg-primary rounded-full animate-pulse"></span>
+</div>
+<div class="space-y-stack-md max-h-64 overflow-y-auto pr-2">
+<div class="flex justify-between items-start">
+<div>
+<p class="font-table-data text-table-data text-primary">G...7k2r</p>
+<p class="font-body-sm text-[12px] text-on-surface-variant">2 mins ago</p>
+</div>
+<span class="font-table-data text-table-data text-primary">+500 XLM</span>
+</div>
+<div class="flex justify-between items-start">
+<div>
+<p class="font-table-data text-table-data text-primary">A...9w1q</p>
+<p class="font-body-sm text-[12px] text-on-surface-variant">12 mins ago</p>
+</div>
+<span class="font-table-data text-table-data text-primary">+25 XLM</span>
+</div>
+<div class="flex justify-between items-start">
+<div>
+<p class="font-table-data text-table-data text-primary">Z...3b8n</p>
+<p class="font-body-sm text-[12px] text-on-surface-variant">45 mins ago</p>
+</div>
+<span class="font-table-data text-table-data text-primary">+1,200 XLM</span>
+</div>
+<div class="flex justify-between items-start">
+<div>
+<p class="font-table-data text-table-data text-primary">M...4m5p</p>
+<p class="font-body-sm text-[12px] text-on-surface-variant">1 hour ago</p>
+</div>
+<span class="font-table-data text-table-data text-primary">+100 XLM</span>
+</div>
+</div>
+</div>
+</div>
+</aside>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full py-stack-xl px-gutter max-w-container-max mx-auto border-t border-outline-variant">
+<div class="flex flex-col md:flex-row justify-between items-center gap-stack-md">
+<div class="flex flex-col gap-stack-xs items-center md:items-start">
+<span class="font-headline-md text-headline-md font-bold text-primary">FundForge</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">© 2024 FundForge. Built on Stellar.</p>
+</div>
+<div class="flex gap-stack-lg">
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Terms</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Privacy</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Docs</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Status</a>
+</div>
+</div>
+</footer>
+<!-- Transaction Pending Overlay (Mockup) -->
+<div class="fixed inset-0 z-[100] flex items-center justify-center bg-background/80 glass-blur opacity-0 pointer-events-none transition-opacity duration-300" id="transactionOverlay">
+<div class="bg-surface-container border border-outline-variant p-stack-xl max-w-sm w-full flex flex-col items-center gap-stack-lg shadow-2xl">
+<div class="relative w-16 h-16">
+<div class="absolute inset-0 border-2 border-outline-variant rounded-full"></div>
+<div class="absolute inset-0 border-2 border-primary border-t-transparent rounded-full animate-spin"></div>
+</div>
+<div class="text-center">
+<h3 class="font-headline-md text-headline-md text-primary mb-2">Transaction Pending</h3>
+<p class="font-body-base text-body-base text-on-surface-variant">Confirming your support on the Stellar network. Please wait...</p>
+</div>
+<div class="w-full bg-surface-container-high p-4 flex flex-col gap-2">
+<div class="flex justify-between text-[11px] font-label-mono uppercase text-on-surface-variant">
+<span>Status</span>
+<span class="text-primary">Sequencing</span>
+</div>
+<div class="h-1 bg-outline-variant w-full overflow-hidden">
+<div class="h-full bg-primary animate-[shimmer_1.5s_infinite]"></div>
+</div>
+</div>
+<button class="text-on-surface-variant font-label-mono text-[10px] uppercase tracking-widest hover:text-primary transition-colors" onclick="closeOverlay()">Cancel</button>
+</div>
+</div>
+<script>
+        function setAmount(val) {
+            document.querySelector('input[type="number"]').value = val;
+        }
+
+        const supportBtn = document.getElementById('supportBtn');
+        const overlay = document.getElementById('transactionOverlay');
+
+        supportBtn.addEventListener('click', () => {
+            overlay.classList.remove('opacity-0', 'pointer-events-none');
+            // Mock success after 3 seconds
+            setTimeout(() => {
+                closeOverlay();
+                alert('Success! Thank you for your support.');
+            }, 3000);
+        });
+
+        function closeOverlay() {
+            overlay.classList.add('opacity-0', 'pointer-events-none');
+        }
+    </script>
+<style>
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+    </style>
+</body></html>

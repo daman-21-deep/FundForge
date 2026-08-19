@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>FundForge | Wallet Center</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Geist:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-primary-fixed": "#1a1c1c",
+                    "tertiary-container": "#e2e2e2",
+                    "on-primary": "#2f3131",
+                    "on-surface-variant": "#c4c7c8",
+                    "secondary": "#c7c6c6",
+                    "surface-container-high": "#2a2a2a",
+                    "on-secondary-container": "#b8b8b8",
+                    "inverse-primary": "#5d5f5f",
+                    "on-secondary-fixed": "#1a1c1c",
+                    "primary": "#ffffff",
+                    "surface-tint": "#c6c6c7",
+                    "on-tertiary": "#2f3131",
+                    "primary-container": "#e2e2e2",
+                    "on-tertiary-container": "#636565",
+                    "surface-variant": "#353535",
+                    "surface-container": "#1f2020",
+                    "primary-fixed": "#e2e2e2",
+                    "tertiary-fixed-dim": "#c6c6c7",
+                    "on-tertiary-fixed": "#1a1c1c",
+                    "on-background": "#e4e2e1",
+                    "on-secondary": "#2f3131",
+                    "inverse-on-surface": "#303030",
+                    "on-primary-container": "#636565",
+                    "on-secondary-fixed-variant": "#464747",
+                    "tertiary": "#ffffff",
+                    "on-primary-fixed-variant": "#454747",
+                    "surface-bright": "#393939",
+                    "on-tertiary-fixed-variant": "#454747",
+                    "outline": "#8e9192",
+                    "error": "#ffb4ab",
+                    "on-error-container": "#ffdad6",
+                    "surface-container-highest": "#353535",
+                    "surface": "#131313",
+                    "inverse-surface": "#e4e2e1",
+                    "secondary-fixed": "#e3e2e2",
+                    "tertiary-fixed": "#e2e2e2",
+                    "secondary-fixed-dim": "#c7c6c6",
+                    "outline-variant": "#444748",
+                    "secondary-container": "#484949",
+                    "surface-container-low": "#1b1c1c",
+                    "surface-container-lowest": "#0e0e0e",
+                    "on-surface": "#e4e2e1",
+                    "surface-dim": "#131313",
+                    "error-container": "#93000a",
+                    "background": "#131313",
+                    "on-error": "#690005",
+                    "primary-fixed-dim": "#c6c6c7"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "stack-sm": "8px",
+                    "stack-md": "16px",
+                    "gutter": "24px",
+                    "container-max": "1280px",
+                    "stack-xs": "4px",
+                    "stack-lg": "32px",
+                    "margin-mobile": "16px",
+                    "stack-xl": "64px"
+            },
+            "fontFamily": {
+                    "body-base": ["Inter"],
+                    "label-mono": ["Geist"],
+                    "display-lg-mobile": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "body-sm": ["Inter"],
+                    "table-data": ["Geist"],
+                    "display-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "body-base": ["16px", {"lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "400"}],
+                    "label-mono": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "display-lg-mobile": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                    "body-sm": ["14px", {"lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "400"}],
+                    "table-data": ["13px", {"lineHeight": "18px", "letterSpacing": "-0.01em", "fontWeight": "400"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.04em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #131313;
+            color: #e4e2e1;
+            -webkit-font-smoothing: antialiased;
+        }
+        .glass-panel {
+            background: rgba(31, 32, 32, 0.4);
+            backdrop-filter: blur(12px);
+            border: 1px solid #444748;
+        }
+        .mask-fade {
+            mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #444748; border-radius: 10px; }
+    </style>
+</head>
+<body class="font-body-base text-body-base min-h-screen flex flex-col">
+<!-- TopNavBar -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-gutter h-16 max-w-container-max mx-auto bg-background dark:bg-background border-b border-outline-variant dark:border-outline-variant">
+<div class="flex items-center gap-stack-lg">
+<span class="font-headline-md text-headline-md font-bold text-primary dark:text-primary">FundForge</span>
+<nav class="hidden md:flex items-center gap-stack-md">
+<a class="font-body-base text-body-base text-on-surface-variant dark:text-on-surface-variant hover:text-primary transition-colors duration-200" href="#">Explore</a>
+<a class="font-body-base text-body-base text-on-surface-variant dark:text-on-surface-variant hover:text-primary transition-colors duration-200" href="#">Create</a>
+<a class="font-body-base text-body-base text-primary dark:text-primary border-b-2 border-primary pb-1 transition-colors duration-200" href="#">Dashboard</a>
+</nav>
+</div>
+<div class="flex items-center gap-stack-md">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">dark_mode</button>
+<button class="px-gutter py-2 bg-primary text-on-primary-fixed font-semibold rounded-lg hover:opacity-90 transition-opacity" id="connect-trigger">Connect Wallet</button>
+</div>
+</header>
+<main class="flex-grow pt-24 px-gutter max-w-container-max mx-auto w-full pb-stack-xl">
+<!-- Dashboard Content (Connected State Simulation) -->
+<div class="space-y-stack-xl" id="wallet-dashboard">
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-stack-md">
+<div class="space-y-stack-xs">
+<h1 class="font-display-lg text-display-lg tracking-tight">Wallet Center</h1>
+<p class="text-on-surface-variant max-w-xl">Manage your Stellar assets, track transactions, and configure network settings for your FundForge profile.</p>
+</div>
+<div class="flex items-center gap-stack-sm px-stack-md py-stack-sm glass-panel rounded-lg">
+<div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+<span class="font-label-mono text-label-mono uppercase tracking-widest text-on-surface-variant">Stellar Testnet</span>
+</div>
+</div>
+<!-- Bento Stats Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-stack-md">
+<!-- Balance Card -->
+<div class="glass-panel p-stack-lg rounded-xl flex flex-col justify-between h-48 group hover:border-primary transition-colors">
+<div class="flex justify-between items-start">
+<span class="font-label-mono text-label-mono uppercase text-on-surface-variant">Total Balance</span>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary">account_balance_wallet</span>
+</div>
+<div class="space-y-1">
+<h2 class="font-display-lg text-display-lg leading-none">12,450.82</h2>
+<p class="font-label-mono text-label-mono text-on-surface-variant">XLM (~$1,494.10 USD)</p>
+</div>
+</div>
+<!-- Address Card -->
+<div class="glass-panel p-stack-lg rounded-xl flex flex-col justify-between h-48 md:col-span-2 group hover:border-primary transition-colors">
+<div class="flex justify-between items-start">
+<span class="font-label-mono text-label-mono uppercase text-on-surface-variant">Wallet Identity</span>
+<button class="flex items-center gap-stack-xs font-label-mono text-label-mono text-primary hover:underline">
+<span class="material-symbols-outlined text-sm">content_copy</span>
+                            Copy Address
+                        </button>
+</div>
+<div>
+<code class="font-label-mono text-xl md:text-2xl break-all leading-tight text-primary">GB6F...O3WR</code>
+<p class="mt-stack-sm text-on-surface-variant font-body-sm flex items-center gap-stack-xs">
+<span class="material-symbols-outlined text-sm">check_circle</span>
+                            Verified via Freighter Extension
+                        </p>
+</div>
+</div>
+</div>
+<!-- Activity Table Section -->
+<div class="space-y-stack-md">
+<div class="flex items-center justify-between">
+<h3 class="font-headline-md text-headline-md">Recent Activity</h3>
+<button class="text-on-surface-variant hover:text-primary font-label-mono text-label-mono flex items-center gap-1">
+                        View All <span class="material-symbols-outlined text-sm">north_east</span>
+</button>
+</div>
+<div class="glass-panel rounded-xl overflow-hidden">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="border-b border-outline-variant bg-surface-container-low">
+<th class="p-gutter font-label-mono text-label-mono text-on-surface-variant uppercase">Transaction Hash</th>
+<th class="p-gutter font-label-mono text-label-mono text-on-surface-variant uppercase">Method</th>
+<th class="p-gutter font-label-mono text-label-mono text-on-surface-variant uppercase">Status</th>
+<th class="p-gutter font-label-mono text-label-mono text-on-surface-variant uppercase text-right">Amount</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant font-table-data text-table-data">
+<tr class="hover:bg-surface-container transition-colors">
+<td class="p-gutter text-primary">0x4a2e...f8c1</td>
+<td class="p-gutter">Project Backing</td>
+<td class="p-gutter">
+<span class="px-2 py-0.5 rounded border border-outline-variant text-[10px] uppercase font-bold text-on-surface-variant">Success</span>
+</td>
+<td class="p-gutter text-right text-primary font-label-mono">- 500.00 XLM</td>
+</tr>
+<tr class="hover:bg-surface-container transition-colors">
+<td class="p-gutter text-primary">0x81b9...a220</td>
+<td class="p-gutter">Network Deposit</td>
+<td class="p-gutter">
+<span class="px-2 py-0.5 rounded border border-outline-variant text-[10px] uppercase font-bold text-on-surface-variant">Success</span>
+</td>
+<td class="p-gutter text-right text-primary font-label-mono">+ 1,200.00 XLM</td>
+</tr>
+<tr class="hover:bg-surface-container transition-colors">
+<td class="p-gutter text-primary">0xf3d1...9b12</td>
+<td class="p-gutter">Smart Contract Execution</td>
+<td class="p-gutter">
+<span class="px-2 py-0.5 rounded border border-outline-variant text-[10px] uppercase font-bold text-on-surface-variant">Success</span>
+</td>
+<td class="p-gutter text-right text-primary font-label-mono">- 0.05 XLM</td>
+</tr>
+<tr class="hover:bg-surface-container transition-colors">
+<td class="p-gutter text-primary">0x22c4...e144</td>
+<td class="p-gutter">Wallet Initialization</td>
+<td class="p-gutter">
+<span class="px-2 py-0.5 rounded border border-outline-variant text-[10px] uppercase font-bold text-on-surface-variant">Success</span>
+</td>
+<td class="p-gutter text-right text-primary font-label-mono">0.00 XLM</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</main>
+<!-- Connect Modal Overlay (Hidden by Default) -->
+<div class="fixed inset-0 z-[100] hidden flex items-center justify-center px-margin-mobile" id="wallet-modal">
+<div class="absolute inset-0 bg-black/80 backdrop-blur-sm" id="modal-close"></div>
+<div class="relative glass-panel w-full max-w-md rounded-xl p-stack-lg shadow-2xl scale-95 transition-transform duration-300" id="modal-content">
+<div class="flex justify-between items-center mb-stack-lg">
+<h2 class="font-headline-md text-headline-md">Connect Wallet</h2>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary" id="modal-close-btn">close</button>
+</div>
+<p class="text-on-surface-variant font-body-sm mb-stack-lg">Choose your preferred Stellar wallet extension or application to interact with FundForge.</p>
+<div class="space-y-stack-sm">
+<!-- Wallet Options -->
+<button class="w-full flex items-center justify-between p-stack-md border border-outline-variant rounded-lg hover:border-primary hover:bg-surface-container-high transition-all group">
+<div class="flex items-center gap-stack-md">
+<div class="w-10 h-10 bg-primary flex items-center justify-center rounded">
+<span class="material-symbols-outlined text-on-primary-fixed">sailing</span>
+</div>
+<div class="text-left">
+<p class="font-semibold text-primary">Freighter Wallet</p>
+<p class="text-xs text-on-surface-variant">Stellar.org official extension</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:translate-x-1 transition-transform">chevron_right</span>
+</button>
+<button class="w-full flex items-center justify-between p-stack-md border border-outline-variant rounded-lg hover:border-primary hover:bg-surface-container-high transition-all group">
+<div class="flex items-center gap-stack-md">
+<div class="w-10 h-10 bg-surface-variant flex items-center justify-center rounded border border-outline-variant">
+<span class="material-symbols-outlined text-primary">token</span>
+</div>
+<div class="text-left">
+<p class="font-semibold text-primary">Albedo</p>
+<p class="text-xs text-on-surface-variant">Delegated signing &amp; multi-sig</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:translate-x-1 transition-transform">chevron_right</span>
+</button>
+<div class="w-full flex items-center justify-between p-stack-md border border-outline-variant border-dashed rounded-lg opacity-50 grayscale cursor-not-allowed">
+<div class="flex items-center gap-stack-md">
+<div class="w-10 h-10 bg-surface-variant flex items-center justify-center rounded">
+<span class="material-symbols-outlined text-on-surface-variant">hourglass_empty</span>
+</div>
+<div class="text-left">
+<p class="font-semibold text-on-surface-variant">Future Wallets</p>
+<p class="text-xs text-on-surface-variant">Coming soon</p>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-stack-lg pt-stack-lg border-t border-outline-variant text-center">
+<p class="text-xs text-on-surface-variant">By connecting, you agree to FundForge's <a class="text-primary hover:underline" href="#">Terms of Service</a> and <a class="text-primary hover:underline" href="#">Privacy Policy</a>.</p>
+</div>
+</div>
+</div>
+<!-- Footer -->
+<footer class="w-full py-stack-xl px-gutter max-w-container-max mx-auto flex flex-col md:flex-row justify-between items-center gap-stack-md bg-surface dark:bg-surface border-t border-outline-variant dark:border-outline-variant">
+<div class="flex flex-col items-center md:items-start gap-stack-xs">
+<span class="font-headline-md text-headline-md font-bold text-primary">FundForge</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">© 2024 FundForge. Built on Stellar.</p>
+</div>
+<div class="flex gap-stack-lg">
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Terms</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Privacy</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Docs</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Status</a>
+</div>
+</footer>
+<script>
+        const modal = document.getElementById('wallet-modal');
+        const modalContent = document.getElementById('modal-content');
+        const trigger = document.getElementById('connect-trigger');
+        const closeBtn = document.getElementById('modal-close-btn');
+        const overlayClose = document.getElementById('modal-close');
+
+        function openModal() {
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modalContent.classList.remove('scale-95');
+                modalContent.classList.add('scale-100');
+            }, 10);
+        }
+
+        function closeModal() {
+            modalContent.classList.remove('scale-100');
+            modalContent.classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 200);
+        }
+
+        trigger.addEventListener('click', openModal);
+        closeBtn.addEventListener('click', closeModal);
+        overlayClose.addEventListener('click', closeModal);
+
+        // Simple dashboard interaction
+        const rows = document.querySelectorAll('tbody tr');
+        rows.forEach(row => {
+            row.addEventListener('click', () => {
+                const hash = row.cells[0].innerText;
+                console.log(`Navigating to transaction: ${hash}`);
+                // Implementation for navigation would go here
+            });
+        });
+    </script>
+</body></html>
