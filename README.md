@@ -304,8 +304,8 @@ Users submit:
 
 The feedback system is used for Level 4 validation.
 
-* **Feedback Google Form**: [https://forms.gle/Nva4R7Xg2ZGhNEL77](https://forms.gle/Nva4R7Xg2ZGhNEL77)
-* **Google Responses Sheet**: [https://docs.google.com/spreadsheets/d/1FyS6kne5vcB5rtbjXIVwekUv2kjuMw8t694haEj9lyM/edit?usp=sharing](https://docs.google.com/spreadsheets/d/1FyS6kne5vcB5rtbjXIVwekUv2kjuMw8t694haEj9lyM/edit?usp=sharing)
+* **Feedback Google Form**: https://forms.gle/ppDdc2Bbruiw6Nxo9
+* **Google Responses Sheet**: https://docs.google.com/spreadsheets/d/18iawpqoxsgKKcJK2qf7PumR3cOUSRJcKkUpXlWFAQUM/edit?usp=sharing
 
 ---
 
