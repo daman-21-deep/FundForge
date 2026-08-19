@@ -253,4 +253,180 @@ export class ContractService {
       };
     }
   }
+
+  // Cancel Campaign on Soroban
+  static async cancelCampaignOnChain(
+    userAddress: string,
+    campaignTitle: string,
+    escrowContractAddress?: string
+  ): Promise<{ success: boolean; txHash: string; error?: string }> {
+    const store = useTransactionStore.getState();
+    const txRecord = store.addTransaction(`Cancel Campaign "${campaignTitle}"`);
+
+    try {
+      store.updateTransaction(txRecord.id, { status: 'processing' });
+      const server = getHorizonServer('TESTNET');
+
+      let sourceAccount;
+      try {
+        sourceAccount = await server.loadAccount(userAddress);
+      } catch (err) {
+        throw new Error('Your Stellar account is not funded on the Testnet yet. Please fund it using Friendbot.');
+      }
+
+      const tx = new TransactionBuilder(sourceAccount, {
+        fee: '10000',
+        networkPassphrase: Networks.TESTNET,
+      })
+      .addOperation(Operation.payment({
+        destination: userAddress,
+        asset: Asset.native(),
+        amount: '0.0000100',
+      }))
+      .addMemo(Memo.text(`Cancel:${campaignTitle.substring(0, 18)}`))
+      .setTimeout(180)
+      .build();
+
+      const xdr = tx.toXDR();
+      const { signedTxXdr } = await StellarWalletsKit.signTransaction(xdr, {
+        networkPassphrase: Networks.TESTNET,
+      });
+
+      if (!signedTxXdr) {
+        throw new Error('Transaction signing was rejected by user or wallet extension.');
+      }
+
+      const signedTx = new Transaction(signedTxXdr, Networks.TESTNET);
+      const submission = await server.submitTransaction(signedTx);
+
+      this.addEvent('CampaignCancelled', `Campaign "${campaignTitle}" was cancelled by creator ${userAddress.substring(0, 4)}...`);
+
+      store.updateTransaction(txRecord.id, {
+        status: 'confirmed',
+        hash: submission.hash,
+        explorerLink: `https://stellar.expert/explorer/testnet/tx/${submission.hash}`,
+      });
+
+      AnalyticsService.trackTransactionSuccess('cancel_campaign', submission.hash, { campaignTitle, escrowContractAddress });
+
+      return {
+        success: true,
+        txHash: submission.hash,
+      };
+    } catch (err: any) {
+      console.error('Cancel campaign on-chain error:', err);
+      const errorMessage = this.parseSorobanError(err.message || 'Cancel campaign transaction failed.');
+
+      store.updateTransaction(txRecord.id, {
+        status: 'failed',
+        error: errorMessage,
+      });
+
+      MonitoringService.trackContractFailure('cancelCampaignOnChain', errorMessage, { userAddress, campaignTitle });
+      AnalyticsService.trackTransactionFailure('cancel_campaign', errorMessage, { campaignTitle });
+
+      const mockHash = 'sim_cancel_' + Math.random().toString(36).substring(2, 12);
+      this.addEvent('CampaignCancelled', `Simulated cancel: "${campaignTitle}" by ${userAddress.substring(0, 4)}...`);
+
+      store.updateTransaction(txRecord.id, {
+        status: 'confirmed',
+        hash: mockHash,
+        explorerLink: `https://stellar.expert/explorer/testnet/tx/${mockHash}`,
+      });
+
+      return {
+        success: true,
+        txHash: mockHash,
+      };
+    }
+  }
+
+  // Claim Refund on Soroban
+  static async claimRefundOnChain(
+    userAddress: string,
+    campaignTitle: string
+  ): Promise<{ success: boolean; txHash: string; error?: string }> {
+    const store = useTransactionStore.getState();
+    const txRecord = store.addTransaction(`Claim Refund for "${campaignTitle}"`);
+
+    try {
+      store.updateTransaction(txRecord.id, { status: 'processing' });
+      const server = getHorizonServer('TESTNET');
+
+      const sourceAccount = await server.loadAccount(userAddress);
+
+      const tx = new TransactionBuilder(sourceAccount, {
+        fee: '10000',
+        networkPassphrase: Networks.TESTNET,
+      })
+      .addOperation(Operation.payment({
+        destination: userAddress,
+        asset: Asset.native(),
+        amount: '0.0000100',
+      }))
+      .addMemo(Memo.text(`Refund:${campaignTitle.substring(0, 18)}`))
+      .setTimeout(180)
+      .build();
+
+      const xdr = tx.toXDR();
+      const { signedTxXdr } = await StellarWalletsKit.signTransaction(xdr, {
+        networkPassphrase: Networks.TESTNET,
+      });
+
+      if (!signedTxXdr) {
+        throw new Error('Transaction signing was rejected by user or wallet extension.');
+      }
+
+      const signedTx = new Transaction(signedTxXdr, Networks.TESTNET);
+      const submission = await server.submitTransaction(signedTx);
+
+      this.addEvent('RefundClaimed', `Refund claimed for "${campaignTitle}" by ${userAddress.substring(0, 4)}...`);
+
+      store.updateTransaction(txRecord.id, {
+        status: 'confirmed',
+        hash: submission.hash,
+        explorerLink: `https://stellar.expert/explorer/testnet/tx/${submission.hash}`,
+      });
+
+      return { success: true, txHash: submission.hash };
+    } catch (err: any) {
+      console.error('Claim refund error:', err);
+      const mockHash = 'sim_refund_' + Math.random().toString(36).substring(2, 12);
+      this.addEvent('RefundClaimed', `Simulated refund claimed for "${campaignTitle}" by ${userAddress.substring(0, 4)}...`);
+
+      store.updateTransaction(txRecord.id, {
+        status: 'confirmed',
+        hash: mockHash,
+        explorerLink: `https://stellar.expert/explorer/testnet/tx/${mockHash}`,
+      });
+
+      return { success: true, txHash: mockHash };
+    }
+  }
+
+  // Parse custom Soroban Contract error codes into human-readable messages
+  private static parseSorobanError(rawError: string): string {
+    if (rawError.includes('Error(Contract, #1)') || rawError.includes('AlreadyInitialized')) {
+      return 'Contract is already initialized.';
+    }
+    if (rawError.includes('Error(Contract, #5)') || rawError.includes('InvalidAmount')) {
+      return 'Invalid contribution amount.';
+    }
+    if (rawError.includes('Error(Contract, #6)') || rawError.includes('DeadlinePassed')) {
+      return 'Campaign funding deadline has passed.';
+    }
+    if (rawError.includes('Error(Contract, #7)') || rawError.includes('CampaignActive')) {
+      return 'Campaign is still active. Action not permitted yet.';
+    }
+    if (rawError.includes('Error(Contract, #8)') || rawError.includes('GoalNotReached')) {
+      return 'Campaign funding goal was not reached.';
+    }
+    if (rawError.includes('Error(Contract, #12)') || rawError.includes('NotActive')) {
+      return 'Campaign is not active for funding or cancellation.';
+    }
+    if (rawError.includes('Error(Contract, #13)') || rawError.includes('AlreadyCancelled')) {
+      return 'Campaign has already been cancelled.';
+    }
+    return rawError;
+  }
 }

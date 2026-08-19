@@ -8,7 +8,7 @@ export interface Campaign {
   currentAmount: number; // in XLM
   daysLeft: number;
   durationDays: number;
-  status: 'active' | 'draft' | 'completed';
+  status: 'active' | 'draft' | 'completed' | 'cancelled';
   image: string;
   backersCount: number;
   contractAddress?: string;

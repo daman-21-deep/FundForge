@@ -186,4 +186,15 @@ export class CampaignService {
     }
     return undefined;
   }
+
+  static cancelCampaign(campaignId: string): Campaign | undefined {
+    const campaigns = this.getStoredCampaigns();
+    const campaign = campaigns.find((c) => c.id === campaignId);
+    if (campaign) {
+      campaign.status = 'cancelled';
+      localStorage.setItem('fundforge_campaigns', JSON.stringify(campaigns));
+      return campaign;
+    }
+    return undefined;
+  }
 }
