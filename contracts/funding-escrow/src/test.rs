@@ -52,7 +52,37 @@ fn test_escrow_funding_success() {
 }
 
 #[test]
-#[should_panic(expected = "Campaign goal not reached")]
+fn test_cancel_campaign_and_refund() {
+    let env = Env::default();
+    env.mock_all_auths();
+
+    let admin = Address::generate(&env);
+    let creator = Address::generate(&env);
+    let contributor = Address::generate(&env);
+
+    let (token_client, token_admin) = create_token_contract(&env, &admin);
+    let escrow_id = env.register(FundingEscrowContract, ());
+    let escrow_client = FundingEscrowContractClient::new(&env, &escrow_id);
+
+    let deadline = env.ledger().timestamp() + 1000;
+    escrow_client.initialize(&token_client.address, &creator, &1000i128, &deadline);
+
+    token_admin.mint(&contributor, &1000i128);
+    escrow_client.fund(&contributor, &500i128);
+
+    assert_eq!(escrow_client.get_state(), super::EscrowState::Active);
+
+    // Creator cancels campaign before deadline
+    escrow_client.cancel_campaign();
+    assert_eq!(escrow_client.get_state(), super::EscrowState::Cancelled);
+
+    // Contributor gets immediate refund even before deadline
+    escrow_client.claim_refund(&contributor);
+    assert_eq!(token_client.balance(&contributor), 1000);
+}
+
+#[test]
+#[should_panic]
 fn test_claim_funds_fails_if_goal_not_reached() {
     let env = Env::default();
     env.mock_all_auths();
@@ -97,6 +127,7 @@ fn test_refund_on_campaign_failure() {
     assert_eq!(token_client.balance(&contributor), 500);
 
     env.ledger().set_timestamp(deadline + 10);
+    assert_eq!(escrow_client.get_state(), super::EscrowState::Failed);
     escrow_client.claim_refund(&contributor);
 
     assert_eq!(token_client.balance(&contributor), 1000);
@@ -104,7 +135,7 @@ fn test_refund_on_campaign_failure() {
 }
 
 #[test]
-#[should_panic(expected = "Contract already initialized")]
+#[should_panic]
 fn test_escrow_double_initialization() {
     let env = Env::default();
     env.mock_all_auths();
@@ -119,7 +150,6 @@ fn test_escrow_double_initialization() {
     let deadline = env.ledger().timestamp() + 1000;
     escrow_client.initialize(&token_client.address, &creator, &1000i128, &deadline);
     escrow_client.initialize(&token_client.address, &creator, &1000i128, &deadline);
-    // Must panic
 }
 
 #[test]
@@ -140,8 +170,6 @@ fn test_unauthorized_escrow_upgrade() {
 
     let dummy_hash = BytesN::from_array(&env, &[1u8; 32]);
 
-    // Malicious user attempts upgrade
-    let attacker = Address::generate(&env);
     env.as_contract(&escrow_id, || {
         escrow_client.upgrade(&dummy_hash);
     });

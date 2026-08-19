@@ -22,7 +22,7 @@ fn test_registry_initialization() {
 }
 
 #[test]
-#[should_panic(expected = "Registry already initialized")]
+#[should_panic]
 fn test_registry_double_initialization() {
     let env = Env::default();
     env.mock_all_auths();

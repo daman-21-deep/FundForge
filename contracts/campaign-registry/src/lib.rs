@@ -1,8 +1,19 @@
 #![no_std]
 use soroban_sdk::{
-    contract, contractimpl, contracttype, symbol_short, vec, Address, BytesN, Env, IntoVal, String,
-    Val, Vec,
+    contract, contracterror, contractimpl, contracttype, panic_with_error, symbol_short, vec,
+    Address, BytesN, Env, IntoVal, String, Val, Vec,
 };
+
+#[contracterror]
+#[derive(Copy, Clone, Debug, Eq, PartialEq, PartialOrd, Ord)]
+#[repr(u32)]
+pub enum Error {
+    AlreadyInitialized = 1,
+    NotInitialized = 2,
+    AdminNotConfigured = 3,
+    InvalidGoal = 4,
+    InvalidDeadline = 5,
+}
 
 #[contracttype]
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -34,7 +45,7 @@ impl CampaignRegistryContract {
     /// Initialize the Registry with an Admin address.
     pub fn initialize(env: Env, admin: Address) {
         if env.storage().instance().has(&DataKey::Initialized) {
-            panic!("Registry already initialized");
+            panic_with_error!(&env, Error::AlreadyInitialized);
         }
         env.storage().instance().set(&DataKey::Initialized, &true);
         env.storage().instance().set(&DataKey::Admin, &admin);
@@ -51,7 +62,7 @@ impl CampaignRegistryContract {
             .storage()
             .instance()
             .get(&DataKey::Admin)
-            .expect("Admin not configured");
+            .unwrap_or_else(|| panic_with_error!(&env, Error::AdminNotConfigured));
         admin.require_auth();
         env.deployer().update_current_contract_wasm(new_wasm_hash);
     }
@@ -75,7 +86,14 @@ impl CampaignRegistryContract {
             .get(&DataKey::Initialized)
             .unwrap_or(false);
         if !initialized {
-            panic!("Registry not initialized");
+            panic_with_error!(&env, Error::NotInitialized);
+        }
+
+        if goal <= 0 {
+            panic_with_error!(&env, Error::InvalidGoal);
+        }
+        if deadline <= env.ledger().timestamp() {
+            panic_with_error!(&env, Error::InvalidDeadline);
         }
 
         let next_id: u32 = env.storage().instance().get(&DataKey::NextId).unwrap_or(1);

@@ -1,5 +1,27 @@
 #![no_std]
-use soroban_sdk::{contract, contractimpl, contracttype, symbol_short, token, Address, BytesN, Env};
+use soroban_sdk::{
+    contract, contracterror, contractimpl, contracttype, panic_with_error, symbol_short, token,
+    Address, BytesN, Env,
+};
+
+#[contracterror]
+#[derive(Copy, Clone, Debug, Eq, PartialEq, PartialOrd, Ord)]
+#[repr(u32)]
+pub enum Error {
+    AlreadyInitialized = 1,
+    NotInitialized = 2,
+    InvalidGoal = 3,
+    InvalidDeadline = 4,
+    InvalidAmount = 5,
+    DeadlinePassed = 6,
+    CampaignActive = 7,
+    GoalNotReached = 8,
+    GoalAlreadyReached = 9,
+    AlreadyClaimed = 10,
+    NoContribution = 11,
+    NotActive = 12,
+    AlreadyCancelled = 13,
+}
 
 #[contracttype]
 #[derive(Clone, Debug, Eq, PartialEq)]
@@ -44,13 +66,13 @@ impl FundingEscrowContract {
     /// Initialize the escrow contract parameters. Can only be initialized once.
     pub fn initialize(env: Env, token: Address, creator: Address, goal: i128, deadline: u64) {
         if env.storage().instance().has(&DataKey::Initialized) {
-            panic!("Contract already initialized");
+            panic_with_error!(&env, Error::AlreadyInitialized);
         }
         if goal <= 0 {
-            panic!("Goal must be positive");
+            panic_with_error!(&env, Error::InvalidGoal);
         }
         if deadline <= env.ledger().timestamp() {
-            panic!("Deadline must be in the future");
+            panic_with_error!(&env, Error::InvalidDeadline);
         }
 
         env.storage().instance().set(&DataKey::Initialized, &true);
@@ -74,7 +96,7 @@ impl FundingEscrowContract {
             .storage()
             .instance()
             .get(&DataKey::Creator)
-            .expect("Creator not configured");
+            .unwrap_or_else(|| panic_with_error!(&env, Error::NotInitialized));
         creator.require_auth();
         env.deployer().update_current_contract_wasm(new_wasm_hash);
     }
@@ -118,12 +140,16 @@ impl FundingEscrowContract {
 
     /// Allows campaign creator to cancel an active campaign before funding goal or deadline is reached.
     pub fn cancel_campaign(env: Env) {
-        let creator: Address = env.storage().instance().get(&DataKey::Creator).unwrap();
+        let creator: Address = env
+            .storage()
+            .instance()
+            .get(&DataKey::Creator)
+            .unwrap_or_else(|| panic_with_error!(&env, Error::NotInitialized));
         creator.require_auth();
 
         let current_state = Self::get_state(env.clone());
         if current_state != EscrowState::Active {
-            panic!("Only active campaigns can be cancelled");
+            panic_with_error!(&env, Error::NotActive);
         }
 
         env.storage()
@@ -146,20 +172,20 @@ impl FundingEscrowContract {
             .get(&DataKey::Initialized)
             .unwrap_or(false);
         if !initialized {
-            panic!("Contract not initialized");
+            panic_with_error!(&env, Error::NotInitialized);
         }
 
         let current_state = Self::get_state(env.clone());
         if current_state != EscrowState::Active {
-            panic!("Campaign is not active for funding");
+            panic_with_error!(&env, Error::NotActive);
         }
 
         let deadline: u64 = env.storage().instance().get(&DataKey::Deadline).unwrap();
         if env.ledger().timestamp() >= deadline {
-            panic!("Campaign deadline has passed");
+            panic_with_error!(&env, Error::DeadlinePassed);
         }
         if amount <= 0 {
-            panic!("Amount must be greater than zero");
+            panic_with_error!(&env, Error::InvalidAmount);
         }
 
         // Fetch current total raised & contributor previous contributions
@@ -206,7 +232,7 @@ impl FundingEscrowContract {
             .get(&DataKey::Initialized)
             .unwrap_or(false);
         if !initialized {
-            panic!("Contract not initialized");
+            panic_with_error!(&env, Error::NotInitialized);
         }
 
         let creator: Address = env.storage().instance().get(&DataKey::Creator).unwrap();
@@ -214,23 +240,23 @@ impl FundingEscrowContract {
 
         let withdrawn: bool = env.storage().instance().get(&DataKey::Withdrawn).unwrap();
         if withdrawn {
-            panic!("Funds already claimed");
+            panic_with_error!(&env, Error::AlreadyClaimed);
         }
 
         let current_state = Self::get_state(env.clone());
         if current_state == EscrowState::Cancelled {
-            panic!("Campaign was cancelled");
+            panic_with_error!(&env, Error::AlreadyCancelled);
         }
 
         let deadline: u64 = env.storage().instance().get(&DataKey::Deadline).unwrap();
         if env.ledger().timestamp() < deadline {
-            panic!("Campaign is still active");
+            panic_with_error!(&env, Error::CampaignActive);
         }
 
         let total_raised: i128 = env.storage().instance().get(&DataKey::TotalRaised).unwrap();
         let goal: i128 = env.storage().instance().get(&DataKey::Goal).unwrap();
         if total_raised < goal {
-            panic!("Campaign goal not reached");
+            panic_with_error!(&env, Error::GoalNotReached);
         }
 
         // Set withdrawn flag to prevent double spending
@@ -256,7 +282,7 @@ impl FundingEscrowContract {
             .get(&DataKey::Initialized)
             .unwrap_or(false);
         if !initialized {
-            panic!("Contract not initialized");
+            panic_with_error!(&env, Error::NotInitialized);
         }
 
         let current_state = Self::get_state(env.clone());
@@ -267,13 +293,13 @@ impl FundingEscrowContract {
         } else {
             let deadline: u64 = env.storage().instance().get(&DataKey::Deadline).unwrap();
             if env.ledger().timestamp() < deadline {
-                panic!("Campaign is still active");
+                panic_with_error!(&env, Error::CampaignActive);
             }
 
             let total_raised: i128 = env.storage().instance().get(&DataKey::TotalRaised).unwrap();
             let goal: i128 = env.storage().instance().get(&DataKey::Goal).unwrap();
             if total_raised >= goal {
-                panic!("Campaign succeeded, refund not available");
+                panic_with_error!(&env, Error::GoalAlreadyReached);
             }
         }
 
@@ -284,7 +310,7 @@ impl FundingEscrowContract {
             .get(&contributor_key)
             .unwrap_or(0);
         if contribution <= 0 {
-            panic!("No contribution found for this address");
+            panic_with_error!(&env, Error::NoContribution);
         }
 
         // Reset contributor's balance inside state
